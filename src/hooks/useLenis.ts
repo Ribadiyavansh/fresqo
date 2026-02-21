@@ -6,7 +6,7 @@ export const useLenis = () => {
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
+
     if (prefersReducedMotion) {
       return;
     }
@@ -20,6 +20,8 @@ export const useLenis = () => {
       wheelMultiplier: 1,
       touchMultiplier: 2,
     });
+
+    (window as any).lenis = lenisRef.current;
 
     function raf(time: number) {
       lenisRef.current?.raf(time);

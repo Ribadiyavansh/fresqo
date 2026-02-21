@@ -68,10 +68,28 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
   const [quantity, setQuantity] = useState(1);
   const gridRef = useRef<HTMLDivElement>(null);
 
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    if (selectedProduct) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      if ((window as any).lenis) (window as any).lenis.stop();
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if ((window as any).lenis) (window as any).lenis.start();
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if ((window as any).lenis) (window as any).lenis.start();
+    };
+  }, [selectedProduct]);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       const cards = gridRef.current?.querySelectorAll('.product-card');
-      
+
       if (cards) {
         gsap.fromTo(
           cards,
@@ -124,7 +142,11 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
           {products.map((product) => (
             <div
               key={product.id}
-              className="product-card bg-white rounded-2xl overflow-hidden shadow-soft card-lift group"
+              className="product-card bg-white rounded-2xl overflow-hidden shadow-soft card-lift group cursor-pointer"
+              onClick={() => {
+                setSelectedProduct(product);
+                setQuantity(1);
+              }}
             >
               {/* Product Image */}
               <div className="relative aspect-square overflow-hidden bg-fresqo-cream">
@@ -142,7 +164,7 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
                   {product.name}
                 </h3>
                 <p className="text-sm text-fresqo-gray mb-4">{product.description}</p>
-                
+
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-2xl text-fresqo-dark">₹{product.price}</span>
                   <button
@@ -189,6 +211,7 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
               exit={{ scale: 0.9, opacity: 0 }}
               className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
               onClick={(e: React.MouseEvent) => e.stopPropagation()}
+              data-lenis-prevent="true"
             >
               <div className="relative">
                 {/* Close button */}
@@ -237,23 +260,27 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
                   </div>
 
                   {/* Quantity Selector */}
-                  <div className="flex items-center gap-4 mb-8">
-                    <span className="font-semibold text-fresqo-dark">Quantity</span>
-                    <div className="flex items-center gap-3 bg-fresqo-cream rounded-xl p-1">
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="w-10 h-10 flex items-center justify-center hover:bg-white rounded-lg transition-colors"
-                      >
-                        <Minus className="w-4 h-4" />
-                      </button>
-                      <span className="w-8 text-center font-semibold">{quantity}</span>
-                      <button
-                        onClick={() => setQuantity(quantity + 1)}
-                        className="w-10 h-10 flex items-center justify-center hover:bg-white rounded-lg transition-colors"
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
+                  <div className="mb-8">
+                    <div className="flex items-center gap-4 mb-1">
+                      <span className="font-semibold text-fresqo-dark">Quantity</span>
+                      <div className="flex items-center gap-3 bg-fresqo-cream rounded-xl p-1">
+                        <button
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          className="w-10 h-10 flex items-center justify-center hover:bg-white rounded-lg transition-colors"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <span className="w-8 text-center font-semibold">{quantity}</span>
+                        <button
+                          onClick={() => setQuantity(Math.min(4, quantity + 1))}
+                          className="w-10 h-10 flex items-center justify-center hover:bg-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={quantity >= 4}
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
+                    <p className="text-[11px] text-fresqo-gray">*maximum 4 per order</p>
                   </div>
 
                   {/* Add to Cart Button */}

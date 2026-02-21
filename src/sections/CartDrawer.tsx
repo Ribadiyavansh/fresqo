@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 
@@ -20,16 +21,34 @@ interface CartDrawerProps {
   onCheckout: () => void;
 }
 
-export default function CartDrawer({ 
-  isOpen, 
-  onClose, 
-  cart, 
-  onUpdateQuantity, 
+export default function CartDrawer({
+  isOpen,
+  onClose,
+  cart,
+  onUpdateQuantity,
   onRemoveItem,
-  onCheckout 
+  onCheckout
 }: CartDrawerProps) {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalAmount = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+  // Prevent background scroll when cart is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      if ((window as any).lenis) (window as any).lenis.stop();
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if ((window as any).lenis) (window as any).lenis.start();
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if ((window as any).lenis) (window as any).lenis.start();
+    };
+  }, [isOpen]);
 
   return (
     <AnimatePresence>
@@ -69,7 +88,7 @@ export default function CartDrawer({
             </div>
 
             {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-6" data-lenis-prevent="true">
               {cart.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <div className="w-20 h-20 bg-fresqo-cream rounded-full flex items-center justify-center mb-4">
@@ -123,22 +142,26 @@ export default function CartDrawer({
                         </p>
 
                         {/* Quantity Controls */}
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => onUpdateQuantity(item.product.id, Math.max(0, item.quantity - 1))}
-                            className="w-7 h-7 bg-white rounded-lg flex items-center justify-center hover:bg-fresqo-lime/20 transition-colors"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="w-8 text-center font-semibold text-sm">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() => onUpdateQuantity(item.product.id, item.quantity + 1)}
-                            className="w-7 h-7 bg-white rounded-lg flex items-center justify-center hover:bg-fresqo-lime/20 transition-colors"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </button>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => onUpdateQuantity(item.product.id, Math.max(0, item.quantity - 1))}
+                              className="w-7 h-7 bg-white rounded-lg flex items-center justify-center hover:bg-fresqo-lime/20 transition-colors"
+                            >
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <span className="w-8 text-center font-semibold text-sm">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() => onUpdateQuantity(item.product.id, Math.min(4, item.quantity + 1))}
+                              className="w-7 h-7 bg-white rounded-lg flex items-center justify-center hover:bg-fresqo-lime/20 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              disabled={item.quantity >= 4}
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
+                          <p className="text-[10px] text-fresqo-gray mt-1">*maximum 4 per order</p>
                         </div>
                       </div>
                     </div>

@@ -39,16 +39,17 @@ export default function MainLayout() {
 
     // Add to cart
     const handleAddToCart = (product: { id: number; name: string; price: number; image: string }, quantity: number) => {
+        const cappedQuantity = Math.min(4, quantity);
         setCart((prevCart) => {
             const existingItem = prevCart.find((item) => item.product.id === product.id);
             if (existingItem) {
                 return prevCart.map((item) =>
                     item.product.id === product.id
-                        ? { ...item, quantity: item.quantity + quantity }
+                        ? { ...item, quantity: Math.min(4, item.quantity + cappedQuantity) }
                         : item
                 );
             }
-            return [...prevCart, { product, quantity }];
+            return [...prevCart, { product, quantity: cappedQuantity }];
         });
         setIsCartOpen(true);
     };
@@ -59,9 +60,10 @@ export default function MainLayout() {
             handleRemoveItem(productId);
             return;
         }
+        const cappedQuantity = Math.min(4, quantity);
         setCart((prevCart) =>
             prevCart.map((item) =>
-                item.product.id === productId ? { ...item, quantity } : item
+                item.product.id === productId ? { ...item, quantity: cappedQuantity } : item
             )
         );
     };

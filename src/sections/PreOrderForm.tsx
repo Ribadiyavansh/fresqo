@@ -55,10 +55,12 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
   const [step, setStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [orderId, setOrderId] = useState('');
+  const [countdown, setCountdown] = useState(5);
 
   // Form state
-  const [selectedProduct, setSelectedProduct] = useState(products[0]);
-  const [quantity, setQuantity] = useState(1);
+  const [orderItems, setOrderItems] = useState<{ id: string, product: typeof products[0], quantity: number }[]>([
+    { id: 'initial', product: products[0], quantity: 1 }
+  ]);
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -73,13 +75,41 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
   // Update selected product based on cart
   useEffect(() => {
     if (cart.length > 0) {
-      const cartProduct = products.find(p => p.id === cart[0].product.id);
-      if (cartProduct) {
-        setSelectedProduct(cartProduct);
-        setQuantity(cart[0].quantity);
-      }
+      const itemsFromCart = cart.map((cItem, index) => {
+        const product = products.find(p => p.id === cItem.product.id) || products[0];
+        return {
+          id: `cart-${index}`,
+          product,
+          quantity: cItem.quantity
+        };
+      });
+      setOrderItems(itemsFromCart);
+    } else {
+      setOrderItems([{ id: 'default', product: products[0], quantity: 1 }]);
     }
   }, [cart]);
+
+  // Countdown timer for automatic close
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    if (isSubmitted && countdown > 0) {
+      timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    } else if (isSubmitted && countdown === 0) {
+      setIsSubmitted(false);
+      setStep(1);
+      setFormData({
+        fullName: '',
+        phone: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        pincode: '',
+      });
+      setCountdown(5); // Reset for next time
+    }
+    return () => clearTimeout(timer);
+  }, [isSubmitted, countdown]);
 
   const validateStep2 = () => {
     const newErrors: Record<string, string> = {};
@@ -121,15 +151,17 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
       // Generate order ID
       const newOrderId = 'FQ' + Date.now().toString().slice(-8);
       setOrderId(newOrderId);
+      setCountdown(5);
       setIsSubmitted(true);
       onClearCart();
     }
   };
 
-  const totalAmount = selectedProduct.price * quantity;
+  const totalAmount = orderItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   const shareOnWhatsApp = () => {
-    const message = `I just ordered Fresqo cocktail bombs! Order ID: ${orderId}. Can't wait to try them! 🍹`;
+    const itemDetails = orderItems.map(item => `${item.product.name} x ${item.quantity}`).join(', ');
+    const message = `I just ordered Fresqo cocktail bombs (${itemDetails})! Order ID: ${orderId}. Can't wait to try them! 🍹`;
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
@@ -165,6 +197,10 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
                 </div>
               </div>
             </div>
+
+            <p className="text-sm text-fresqo-gray mb-4 font-medium">
+              Closing automatically in <span className="font-bold text-fresqo-dark text-lg">{countdown}</span> seconds...
+            </p>
 
             <button
               onClick={shareOnWhatsApp}
@@ -237,71 +273,97 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
                     exit={{ opacity: 0, x: -20 }}
                   >
                     <h3 className="font-oswald text-xl font-bold text-fresqo-dark mb-6">
-                      Select Your Flavour
+                      Select Your Flavours
                     </h3>
 
-                    {/* Product Dropdown */}
-                    <div className="mb-6">
-                      <label className="block text-sm font-medium text-fresqo-dark mb-2">
-                        Product
-                      </label>
-                      <div className="relative">
-                        <select
-                          value={selectedProduct.id}
-                          onChange={(e) => {
-                            const product = products.find(p => p.id === Number(e.target.value));
-                            if (product) setSelectedProduct(product);
-                          }}
-                          className="w-full p-4 bg-fresqo-cream rounded-xl appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-fresqo-lime"
-                        >
-                          {products.map((product) => (
-                            <option key={product.id} value={product.id}>
-                              {product.name} - ₹{product.price}
-                            </option>
-                          ))}
-                        </select>
-                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-fresqo-gray pointer-events-none" />
-                      </div>
-                    </div>
+                    {/* Order Items List */}
+                    <div className="space-y-6">
+                      {orderItems.map((item, index) => (
+                        <div key={item.id} className="relative p-4 border border-fresqo-border rounded-xl bg-white shadow-sm">
+                          {orderItems.length > 1 && (
+                            <button
+                              onClick={() => {
+                                setOrderItems(orderItems.filter(i => i.id !== item.id));
+                              }}
+                              className="absolute top-2 right-2 p-1 text-fresqo-gray hover:text-red-500 transition-colors"
+                              title="Remove item"
+                            >
+                              <Minus className="w-5 h-5 rotate-45" /> {/* Use Minus rotated instead of X if X isn't imported from lucide */}
+                            </button>
+                          )}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* Product Select */}
+                            <div>
+                              <label className="block text-xs font-medium text-fresqo-dark mb-1">
+                                Product {index + 1}
+                              </label>
+                              <div className="relative">
+                                <select
+                                  value={item.product.id}
+                                  onChange={(e) => {
+                                    const newProduct = products.find(p => p.id === Number(e.target.value));
+                                    if (newProduct) {
+                                      setOrderItems(orderItems.map(i => i.id === item.id ? { ...i, product: newProduct } : i));
+                                    }
+                                  }}
+                                  className="w-full p-2 bg-fresqo-cream rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-fresqo-lime text-sm"
+                                >
+                                  {products.map((product) => (
+                                    <option key={product.id} value={product.id}>
+                                      {product.name}
+                                    </option>
+                                  ))}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-fresqo-gray pointer-events-none" />
+                              </div>
+                            </div>
 
-                    {/* Selected Product Preview */}
-                    <div className="flex items-center gap-4 p-4 bg-fresqo-cream rounded-xl mb-6">
-                      <img
-                        src={selectedProduct.image}
-                        alt={selectedProduct.name}
-                        className="w-16 h-16 object-cover rounded-lg"
-                      />
-                      <div>
-                        <p className="font-semibold text-fresqo-dark">{selectedProduct.name}</p>
-                        <p className="text-fresqo-gray">₹{selectedProduct.price}</p>
-                      </div>
-                    </div>
-
-                    {/* Quantity Selector */}
-                    <div className="mb-8">
-                      <label className="block text-sm font-medium text-fresqo-dark mb-2">
-                        Quantity
-                      </label>
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-3 bg-fresqo-cream rounded-xl p-1">
-                          <button
-                            onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                            className="w-10 h-10 flex items-center justify-center hover:bg-white rounded-lg transition-colors"
-                          >
-                            <Minus className="w-4 h-4" />
-                          </button>
-                          <span className="w-12 text-center font-semibold">{quantity}</span>
-                          <button
-                            onClick={() => setQuantity(quantity + 1)}
-                            className="w-10 h-10 flex items-center justify-center hover:bg-white rounded-lg transition-colors"
-                          >
-                            <Plus className="w-4 h-4" />
-                          </button>
+                            {/* Quantity */}
+                            <div>
+                              <label className="block text-xs font-medium text-fresqo-dark mb-1">
+                                Quantity
+                              </label>
+                              <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2 bg-fresqo-cream rounded-lg p-1">
+                                  <button
+                                    onClick={() => setOrderItems(orderItems.map(i => i.id === item.id ? { ...i, quantity: Math.max(1, i.quantity - 1) } : i))}
+                                    className="w-8 h-8 flex items-center justify-center hover:bg-white rounded-md transition-colors"
+                                  >
+                                    <Minus className="w-3 h-3" />
+                                  </button>
+                                  <span className="w-8 text-center font-semibold text-sm">{item.quantity}</span>
+                                  <button
+                                    onClick={() => setOrderItems(orderItems.map(i => i.id === item.id ? { ...i, quantity: Math.min(4, i.quantity + 1) } : i))}
+                                    className="w-8 h-8 flex items-center justify-center hover:bg-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    disabled={item.quantity >= 4}
+                                  >
+                                    <Plus className="w-3 h-3" />
+                                  </button>
+                                </div>
+                                <span className="font-semibold text-fresqo-dark text-sm">₹{item.product.price * item.quantity}</span>
+                              </div>
+                              <p className="text-[10px] text-fresqo-gray mt-1">*maximum 4 per order</p>
+                            </div>
+                          </div>
                         </div>
-                        <span className="text-fresqo-gray">
-                          Total: <span className="font-bold text-fresqo-dark">₹{totalAmount}</span>
-                        </span>
-                      </div>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setOrderItems([
+                          ...orderItems,
+                          { id: `new-${Date.now()}`, product: products[0], quantity: 1 }
+                        ]);
+                      }}
+                      className="mt-4 flex items-center gap-2 text-fresqo-dark hover:text-fresqo-lime font-medium transition-colors text-sm"
+                    >
+                      <Plus className="w-4 h-4" /> Add Another Flavour
+                    </button>
+
+                    <div className="mt-8 pt-4 border-t border-fresqo-border flex justify-between items-center mb-6">
+                      <span className="font-semibold text-fresqo-dark">Subtotal:</span>
+                      <span className="font-oswald text-2xl font-bold text-fresqo-dark">₹{totalAmount}</span>
                     </div>
 
                     <button
@@ -495,13 +557,17 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
                     {/* Order Summary */}
                     <div className="bg-fresqo-cream rounded-xl p-4 mb-6">
                       <h4 className="font-semibold text-fresqo-dark mb-3">Order Summary</h4>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-fresqo-gray">{selectedProduct.name} x {quantity}</span>
-                        <span className="font-medium">₹{totalAmount}</span>
+                      <div className="space-y-2 mb-4">
+                        {orderItems.map((item, index) => (
+                          <div key={index} className="flex items-center justify-between text-sm">
+                            <span className="text-fresqo-gray truncate max-w-[200px]">{item.product.name} <span className="text-xs">x{item.quantity}</span></span>
+                            <span className="font-medium">₹{item.product.price * item.quantity}</span>
+                          </div>
+                        ))}
                       </div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-fresqo-gray">Shipping</span>
-                        <span className="text-fresqo-lime font-medium">Free</span>
+                        <span className="text-fresqo-gray text-sm">Shipping</span>
+                        <span className="text-fresqo-lime font-medium text-sm">Free</span>
                       </div>
                       <div className="border-t border-fresqo-border mt-3 pt-3 flex items-center justify-between">
                         <span className="font-semibold text-fresqo-dark">Total</span>
