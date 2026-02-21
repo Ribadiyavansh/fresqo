@@ -2,11 +2,11 @@ import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ShoppingBag, 
-  Check, 
-  ChevronDown, 
-  Plus, 
+import {
+  ShoppingBag,
+  Check,
+  ChevronDown,
+  Plus,
   Minus,
   Truck,
   Phone,
@@ -43,10 +43,10 @@ const products = [
 ];
 
 const states = [
-  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 
-  'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 
-  'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 
-  'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 
+  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
+  'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh',
+  'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+  'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh',
   'Uttarakhand', 'West Bengal', 'Delhi', 'Jammu & Kashmir', 'Ladakh', 'Puducherry'
 ];
 
@@ -55,7 +55,7 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
   const [step, setStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [orderId, setOrderId] = useState('');
-  
+
   // Form state
   const [selectedProduct, setSelectedProduct] = useState(products[0]);
   const [quantity, setQuantity] = useState(1);
@@ -83,35 +83,35 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
 
   const validateStep2 = () => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'Full name is required';
     }
-    
+
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
     } else if (!/^\d{10}$/.test(formData.phone)) {
       newErrors.phone = 'Please enter a valid 10-digit phone number';
     }
-    
+
     if (!formData.address1.trim()) {
       newErrors.address1 = 'Address is required';
     }
-    
+
     if (!formData.city.trim()) {
       newErrors.city = 'City is required';
     }
-    
+
     if (!formData.state) {
       newErrors.state = 'State is required';
     }
-    
+
     if (!formData.pincode.trim()) {
       newErrors.pincode = 'PIN code is required';
     } else if (!/^\d{6}$/.test(formData.pincode)) {
       newErrors.pincode = 'Please enter a valid 6-digit PIN code';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -146,15 +146,15 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
             <div className="w-20 h-20 bg-fresqo-lime/20 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle2 className="w-10 h-10 text-fresqo-lime" />
             </div>
-            
+
             <h2 className="font-oswald text-3xl md:text-4xl font-bold text-fresqo-dark mb-4">
-              Your Fresqo is Coming!
+              your order will comming!
             </h2>
-            
+
             <p className="text-fresqo-gray mb-8">
               Thank you for your pre-order. We've received your order and will process it shortly.
             </p>
-            
+
             <div className="bg-fresqo-cream rounded-2xl p-6 mb-8">
               <p className="text-sm text-fresqo-gray mb-2">Order ID</p>
               <p className="font-oswald text-2xl font-bold text-fresqo-dark">{orderId}</p>
@@ -165,7 +165,7 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
                 </div>
               </div>
             </div>
-            
+
             <button
               onClick={shareOnWhatsApp}
               className="w-full flex items-center justify-center gap-2 bg-green-500 text-white font-semibold px-6 py-3 rounded-xl hover:bg-green-600 transition-colors"
@@ -201,27 +201,24 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
             {/* Progress Steps */}
             <div className="flex items-center justify-center gap-4 p-6 border-b border-fresqo-border">
               <div className={`flex items-center gap-2 ${step >= 1 ? 'text-fresqo-lime' : 'text-fresqo-gray'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                  step >= 1 ? 'gradient-bg text-fresqo-charcoal' : 'bg-fresqo-cream text-fresqo-gray'
-                }`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 1 ? 'gradient-bg text-fresqo-charcoal' : 'bg-fresqo-cream text-fresqo-gray'
+                  }`}>
                   1
                 </div>
                 <span className="hidden sm:inline text-sm font-medium">Product</span>
               </div>
               <div className="w-8 h-0.5 bg-fresqo-border" />
               <div className={`flex items-center gap-2 ${step >= 2 ? 'text-fresqo-lime' : 'text-fresqo-gray'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                  step >= 2 ? 'gradient-bg text-fresqo-charcoal' : 'bg-fresqo-cream text-fresqo-gray'
-                }`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 2 ? 'gradient-bg text-fresqo-charcoal' : 'bg-fresqo-cream text-fresqo-gray'
+                  }`}>
                   2
                 </div>
                 <span className="hidden sm:inline text-sm font-medium">Details</span>
               </div>
               <div className="w-8 h-0.5 bg-fresqo-border" />
               <div className={`flex items-center gap-2 ${step >= 3 ? 'text-fresqo-lime' : 'text-fresqo-gray'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                  step >= 3 ? 'gradient-bg text-fresqo-charcoal' : 'bg-fresqo-cream text-fresqo-gray'
-                }`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 3 ? 'gradient-bg text-fresqo-charcoal' : 'bg-fresqo-cream text-fresqo-gray'
+                  }`}>
                   3
                 </div>
                 <span className="hidden sm:inline text-sm font-medium">Payment</span>
