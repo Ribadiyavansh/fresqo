@@ -110,6 +110,14 @@ export default function MainLayout() {
     }, []);
 
     useEffect(() => {
+        // Toggle no-scrollbar class on mount/unmount
+        document.documentElement.classList.add('no-scrollbar');
+        return () => {
+            document.documentElement.classList.remove('no-scrollbar');
+        };
+    }, []);
+
+    useEffect(() => {
         // Refresh ScrollTrigger on load
         const handleLoad = () => {
             ScrollTrigger.refresh();
