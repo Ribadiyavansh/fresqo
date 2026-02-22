@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { X, Flame } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function AnnouncementBar() {
+interface AnnouncementBarProps {
+  onClose?: () => void;
+}
+
+export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   if (!isVisible) return null;
@@ -20,7 +24,10 @@ export default function AnnouncementBar() {
           <span>Pre-Orders Open | Cash on Delivery Available Across India</span>
         </div>
         <button
-          onClick={() => setIsVisible(false)}
+          onClick={() => {
+            setIsVisible(false);
+            onClose?.();
+          }}
           className="absolute right-4 p-1 hover:bg-black/10 rounded-full transition-colors"
           aria-label="Close announcement"
         >

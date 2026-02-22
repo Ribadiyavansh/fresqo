@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface NavbarProps {
   cartCount: number;
   onCartClick: () => void;
+  isAnnouncementVisible: boolean;
 }
 
-export default function Navbar({ cartCount, onCartClick }: NavbarProps) {
+export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -41,16 +42,15 @@ export default function Navbar({ cartCount, onCartClick }: NavbarProps) {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          isScrolled ? 'glass shadow-soft' : 'bg-transparent'
-        }`}
-        style={{ top: isScrolled ? 0 : '40px' }}
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${isScrolled ? 'glass shadow-soft border-b border-fresqo-border bg-white/80' : 'bg-transparent border-b border-transparent'
+          }`}
+        style={{ top: isAnnouncementVisible && !isScrolled ? '40px' : '0px' }}
       >
         <div className="container-custom">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
-            <a 
-              href="#home" 
+            <a
+              href="#home"
               onClick={(e) => { e.preventDefault(); scrollToSection('#home'); }}
               className="font-oswald text-2xl md:text-3xl font-bold text-fresqo-dark"
             >

@@ -8,8 +8,7 @@ import CustomCursor from '@/components/CustomCursor';
 import NoiseOverlay from '@/components/NoiseOverlay';
 import AnnouncementBar from '@/sections/AnnouncementBar';
 import Navbar from '@/sections/Navbar';
-import CartDrawer from '@/sections/CartDrawer';
-import Footer from '@/sections/Footer';
+import CartDrawer from '@/sections/CartDrawer'; import Footer from '@/sections/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,6 +37,9 @@ export default function MainLayout() {
     // Cart state
     const [cart, setCart] = useState<CartItem[]>([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
+
+    // Announcement state
+    const [isAnnouncementVisible, setIsAnnouncementVisible] = useState(true);
 
     // Add to cart
     const handleAddToCart = (product: { id: number; name: string; price: number; originalPrice: number; discount: string; image: string }, quantity: number) => {
@@ -156,10 +158,14 @@ export default function MainLayout() {
             <CustomCursor />
 
             {/* Announcement Bar */}
-            <AnnouncementBar />
+            {isAnnouncementVisible && <AnnouncementBar onClose={() => setIsAnnouncementVisible(false)} />}
 
             {/* Navigation */}
-            <Navbar cartCount={cartCount} onCartClick={() => setIsCartOpen(true)} />
+            <Navbar
+                cartCount={cartCount}
+                onCartClick={() => setIsCartOpen(true)}
+                isAnnouncementVisible={isAnnouncementVisible}
+            />
 
             {/* Cart Drawer */}
             <CartDrawer

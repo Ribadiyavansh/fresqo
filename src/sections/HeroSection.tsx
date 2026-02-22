@@ -19,12 +19,12 @@ export default function HeroSection() {
       gsap.fromTo(
         titleRef.current,
         { opacity: 0, y: 50 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 1, 
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
           ease: 'power3.out',
-          delay: 0.2 
+          delay: 0.2
         }
       );
 
@@ -32,12 +32,12 @@ export default function HeroSection() {
       gsap.fromTo(
         subtitleRef.current,
         { opacity: 0, y: 30 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.8, 
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
           ease: 'power3.out',
-          delay: 0.4 
+          delay: 0.4
         }
       );
 
@@ -45,12 +45,12 @@ export default function HeroSection() {
       gsap.fromTo(
         ctaRef.current,
         { opacity: 0, y: 30 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.8, 
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
           ease: 'power3.out',
-          delay: 0.6 
+          delay: 0.6
         }
       );
 
@@ -58,12 +58,12 @@ export default function HeroSection() {
       gsap.fromTo(
         imageRef.current,
         { opacity: 0, scale: 0.9 },
-        { 
-          opacity: 1, 
-          scale: 1, 
-          duration: 1.2, 
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1.2,
           ease: 'power3.out',
-          delay: 0.3 
+          delay: 0.3
         }
       );
 
@@ -93,7 +93,7 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       id="home"
-      className="relative min-h-screen flex items-center pt-20 overflow-hidden"
+      className="relative min-h-screen flex items-center pt-32 lg:pt-40 pb-20 overflow-hidden"
     >
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
@@ -128,7 +128,7 @@ export default function HeroSection() {
               ref={subtitleRef}
               className="text-lg md:text-xl text-fresqo-gray max-w-lg mx-auto lg:mx-0 mb-8"
             >
-              Premium cocktail & mocktail bombs. Instant party magic in every sphere. 
+              Premium cocktail & mocktail bombs. Instant party magic in every sphere.
               Just drop, fizz, and enjoy!
             </p>
 
@@ -179,7 +179,7 @@ export default function HeroSection() {
             >
               {/* Glow effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-fresqo-lime/30 to-fresqo-aqua/30 rounded-full blur-3xl scale-110" />
-              
+
               {/* Main image */}
               <div className="relative rounded-3xl overflow-hidden shadow-lift">
                 <img
