@@ -112,7 +112,7 @@ export default function HeroSection() {
               className="inline-flex items-center gap-2 bg-fresqo-lime/20 px-4 py-2 rounded-full mb-6"
             >
               <Sparkles className="w-4 h-4 text-fresqo-lime" />
-              <span className="text-sm font-medium text-fresqo-dark">Premium Cocktail Bombs</span>
+              <span className="text-sm font-medium text-fresqo-dark">Premium Cocktail Balls</span>
             </motion.div>
 
             <h1
@@ -128,7 +128,7 @@ export default function HeroSection() {
               ref={subtitleRef}
               className="text-lg md:text-xl text-fresqo-gray max-w-lg mx-auto lg:mx-0 mb-8"
             >
-              Premium cocktail & mocktail bombs. Instant party magic in every sphere.
+              Premium cocktail & mocktail balls. Instant party magic in every sphere.
               Just drop, fizz, and enjoy!
             </p>
 
@@ -184,7 +184,7 @@ export default function HeroSection() {
               <div className="relative rounded-3xl overflow-hidden shadow-lift">
                 <img
                   src="/images/hero-bomb.jpg"
-                  alt="Fresqo Cocktail Bomb fizzing in a glass"
+                  alt="Fresqo Cocktail Ball fizzing in a glass"
                   className="w-full h-auto object-cover"
                 />
               </div>

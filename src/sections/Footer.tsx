@@ -30,7 +30,7 @@ export default function Footer() {
               <Sparkles className="w-5 h-5 text-fresqo-lime" />
             </a>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Premium cocktail & mocktail bombs. Drop, fizz, and celebrate with the perfect drink every time.
+              Premium cocktail & mocktail balls. Drop, fizz, and celebrate with the perfect drink every time.
             </p>
             <div className="flex items-center gap-4">
               <a

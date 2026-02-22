@@ -53,7 +53,7 @@ export default function Ingredients() {
                 className="w-full h-auto object-cover"
               />
             </div>
-            
+
             {/* Floating badge */}
             <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-soft p-6">
               <div className="flex items-center gap-4">
@@ -77,7 +77,7 @@ export default function Ingredients() {
               Only the Best Ingredients
             </h2>
             <p className="text-fresqo-gray text-lg mb-8">
-              We believe in transparency and quality. Every Fresqo bomb is crafted with carefully sourced, premium ingredients that you can trust.
+              We believe in transparency and quality. Every Fresqo ball is crafted with carefully sourced, premium ingredients that you can trust.
             </p>
 
             {/* Features Grid */}

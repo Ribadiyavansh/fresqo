@@ -100,7 +100,7 @@ export default function CartDrawer({
                     Your cart is empty
                   </h3>
                   <p className="text-fresqo-gray mb-6">
-                    Add some delicious cocktail bombs to get started!
+                    Add some delicious cocktail balls to get started!
                   </p>
                   <button
                     onClick={onClose}

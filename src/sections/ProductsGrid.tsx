@@ -34,7 +34,7 @@ const products: Product[] = [
   },
   {
     id: 2,
-    name: 'Cosmopolitan Bomb',
+    name: 'Cosmopolitan Ball',
     description: 'Classic cranberry-citrus blend',
     price: 349,
     originalPrice: 449,
@@ -54,7 +54,7 @@ const products: Product[] = [
   },
   {
     id: 4,
-    name: 'Kala Khatta Bomb',
+    name: 'Kala Khatta Ball',
     description: 'Authentic Indian flavor',
     price: 349,
     originalPrice: 449,
@@ -145,7 +145,7 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
             Featured Flavours
           </h2>
           <p className="text-fresqo-gray max-w-2xl mx-auto">
-            Choose from our carefully crafted selection of cocktail bombs, each designed to deliver a unique taste experience.
+            Choose from our carefully crafted selection of cocktail balls, each designed to deliver a unique taste experience.
           </p>
         </div>
 

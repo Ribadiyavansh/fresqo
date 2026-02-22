@@ -106,12 +106,12 @@ export default function MainLayout() {
 
     useEffect(() => {
         // Set document title
-        document.title = 'Fresqo - Premium Cocktail Bombs | Drop. Fizz. Celebrate.';
+        document.title = 'Fresqo - Premium Cocktail Balls | Drop. Fizz. Celebrate.';
         document.documentElement.lang = 'en';
 
         const metaDesc = document.querySelector('meta[name="description"]');
         if (metaDesc) {
-            metaDesc.setAttribute('content', 'Premium cocktail & mocktail bombs. Instant party magic in every sphere. Just drop, fizz, and enjoy! COD available across India.');
+            metaDesc.setAttribute('content', 'Premium cocktail & mocktail balls. Instant party magic in every sphere. Just drop, fizz, and enjoy! COD available across Rajkot.');
         }
     }, []);
 

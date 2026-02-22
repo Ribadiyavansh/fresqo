@@ -12,7 +12,7 @@ const testimonials = [
     name: 'Priya Sharma',
     image: '/images/testimonial-1.jpg',
     rating: 5,
-    text: 'Absolutely love these cocktail bombs! They make hosting so much easier. My guests are always impressed.',
+    text: 'Absolutely love these cocktail balls! They make hosting so much easier. My guests are always impressed.',
   },
   {
     id: 2,
@@ -151,11 +151,10 @@ export default function Testimonials() {
                   setIsAutoPlaying(false);
                   setCurrentIndex(index);
                 }}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex
                     ? 'w-8 gradient-bg'
                     : 'bg-fresqo-gray/30 hover:bg-fresqo-gray/50'
-                }`}
+                  }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}

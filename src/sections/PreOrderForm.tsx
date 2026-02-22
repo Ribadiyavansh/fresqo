@@ -39,9 +39,9 @@ interface PreOrderFormProps {
 
 const products = [
   { id: 1, name: 'Variety Pack', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-variety.jpg' },
-  { id: 2, name: 'Cosmopolitan Bomb', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-cosmopolitan.jpg' },
+  { id: 2, name: 'Cosmopolitan Ball', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-cosmopolitan.jpg' },
   { id: 3, name: 'Sex on the Beach', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-sexonthebeach.jpg' },
-  { id: 4, name: 'Kala Khatta Bomb', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-kalakhatta.jpg' },
+  { id: 4, name: 'Kala Khatta Ball', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-kalakhatta.jpg' },
   { id: 5, name: 'Watermelon Mint', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-watermelon.jpg' },
 ];
 
@@ -164,7 +164,7 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
 
   const shareOnWhatsApp = () => {
     const itemDetails = orderItems.map(item => `${item.product.name} x ${item.quantity}`).join(', ');
-    const message = `I just ordered Fresqo cocktail bombs (${itemDetails})! Order ID: ${orderId}. Can't wait to try them! 🍹`;
+    const message = `I just ordered Fresqo cocktail balls (${itemDetails})! Order ID: ${orderId}. Can't wait to try them! 🍹`;
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
@@ -231,7 +231,7 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
               Pre-Order Now
             </h2>
             <p className="text-fresqo-charcoal/70">
-              Cash on Delivery available across India
+              Cash on Delivery available across Rajkot
             </p>
           </div>
 

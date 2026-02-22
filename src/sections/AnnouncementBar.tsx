@@ -21,7 +21,7 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
       >
         <div className="flex items-center gap-2 text-fresqo-charcoal text-sm font-medium">
           <Flame className="w-4 h-4" />
-          <span>Pre-Orders Open | Cash on Delivery Available Across India</span>
+          <span>Pre-Orders Open | Cash on Delivery Available Across Rajkot</span>
         </div>
         <button
           onClick={() => {

@@ -8,7 +8,7 @@ const steps = [
   {
     number: '01',
     title: 'Drop',
-    description: 'Drop the bomb into 200ml of soda or sparkling water.',
+    description: 'Drop the ball into 200ml of soda or sparkling water.',
     image: '/images/step-drop.jpg',
   },
   {

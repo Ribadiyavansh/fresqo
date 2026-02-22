@@ -16,7 +16,7 @@ const features = [
   {
     icon: Zap,
     title: 'Instant Mix',
-    description: 'Ready in 30 seconds. Just drop the bomb, watch it fizz, and enjoy your drink.',
+    description: 'Ready in 30 seconds. Just drop the ball, watch it fizz, and enjoy your drink.',
     color: 'bg-fresqo-aqua/20',
     iconColor: 'text-fresqo-aqua',
   },
@@ -36,7 +36,7 @@ export default function ValueProposition() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const cards = cardsRef.current?.querySelectorAll('.feature-card');
-      
+
       if (cards) {
         gsap.fromTo(
           cards,
@@ -72,7 +72,7 @@ export default function ValueProposition() {
             The Fresqo Difference
           </h2>
           <p className="text-fresqo-gray max-w-2xl mx-auto">
-            We craft every bomb with premium ingredients and love, ensuring you get the perfect drink every single time.
+            We craft every ball with premium ingredients and love, ensuring you get the perfect drink every single time.
           </p>
         </div>
 

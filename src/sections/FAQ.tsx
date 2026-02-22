@@ -8,24 +8,24 @@ gsap.registerPlugin(ScrollTrigger);
 
 const faqs = [
   {
-    question: 'What is a Fresqo Bomb?',
-    answer: 'A Fresqo Bomb is a premium cocktail and mocktail mixer in solid form. Simply drop it into sparkling water or soda, watch it fizz and dissolve, and enjoy a delicious drink in seconds. Each bomb is carefully crafted with natural fruit extracts and premium ingredients.',
+    question: 'What is a Fresqo Ball?',
+    answer: 'A Fresqo Ball is a premium cocktail and mocktail mixer in solid form. Simply drop it into sparkling water or soda, watch it fizz and dissolve, and enjoy a delicious drink in seconds. Each ball is carefully crafted with natural fruit extracts and premium ingredients.',
   },
   {
     question: 'Is it alcoholic?',
-    answer: 'No, Fresqo Bombs are completely alcohol-free. They are designed to be versatile - enjoy them as refreshing mocktails, or add your favorite spirit to create cocktails. The choice is yours!',
+    answer: 'No, Fresqo Balls are completely alcohol-free. They are designed to be versatile - enjoy them as refreshing mocktails, or add your favorite spirit to create cocktails. The choice is yours!',
   },
   {
     question: 'How long does delivery take?',
-    answer: 'We deliver across India within 5-7 business days for metro cities and 7-10 business days for other locations. You will receive a tracking number once your order is dispatched.',
+    answer: 'We deliver across Rajkot within 5-7 business days for metro cities and 7-10 business days for other locations. You will receive a tracking number once your order is dispatched.',
   },
   {
     question: 'What is the shelf life?',
-    answer: 'Fresqo Bombs have a shelf life of 6 months from the date of manufacture. Each pack has the expiry date clearly printed on it. Store them in a cool, dry place away from direct sunlight.',
+    answer: 'Fresqo Balls have a shelf life of 6 months from the date of manufacture. Each pack has the expiry date clearly printed on it. Store them in a cool, dry place away from direct sunlight.',
   },
   {
     question: 'Is COD available everywhere?',
-    answer: 'Cash on Delivery (COD) is available for most locations across India. Some remote areas may have limited COD availability. You can check the payment options available for your pincode during checkout.',
+    answer: 'Cash on Delivery (COD) is available for most locations across Rajkot. Some remote areas may have limited COD availability. You can check the payment options available for your pincode during checkout.',
   },
 ];
 
@@ -75,7 +75,7 @@ export default function FAQ() {
             <p className="text-fresqo-gray text-lg mb-8">
               Everything you need to know about Fresqo. Can't find what you're looking for? Feel free to reach out to us.
             </p>
-            
+
             <div className="flex items-center gap-4 p-6 bg-white rounded-2xl shadow-soft">
               <div className="w-12 h-12 bg-fresqo-lime/20 rounded-xl flex items-center justify-center">
                 <HelpCircle className="w-6 h-6 text-fresqo-lime" />
@@ -107,7 +107,7 @@ export default function FAQ() {
                     <ChevronDown className="w-5 h-5 text-fresqo-aqua" />
                   </motion.div>
                 </button>
-                
+
                 <AnimatePresence>
                   {openIndex === index && (
                     <motion.div

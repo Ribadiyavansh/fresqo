@@ -42,7 +42,7 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${isScrolled ? 'glass shadow-soft border-b border-fresqo-border bg-white/80' : 'bg-transparent border-b border-transparent'
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${isScrolled ? 'bg-white shadow-soft border-b border-fresqo-border' : 'bg-white border-b border-fresqo-border lg:border-transparent'
           }`}
         style={{ top: isAnnouncementVisible && !isScrolled ? '40px' : '0px' }}
       >
@@ -91,7 +91,7 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
               <a
                 href="#pre-order"
                 onClick={(e) => { e.preventDefault(); scrollToSection('#pre-order'); }}
-                className="hidden md:block btn-primary text-sm"
+                className="hidden md:block bg-fresqo-lime text-fresqo-dark px-6 py-2 rounded-full font-semibold hover:bg-fresqo-lime/90 transition-colors text-sm"
               >
                 Pre-Order Now
               </a>
