@@ -41,8 +41,9 @@ export default function Login({ onLogin }: LoginProps) {
                             type="email"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
-                            className="w-full p-2 border rounded"
-                            placeholder="admin@fresqo.com"
+                            required
+                            placeholder="fresqo.in@gmail.com"
+                            className="w-full pl-10 pr-4 py-3 bg-fresqo-cream border border-fresqo-border rounded-xl focus:outline-none focus:ring-2 focus:ring-fresqo-lime transition-all"
                         />
                     </div>
                     <div>
@@ -59,8 +60,10 @@ export default function Login({ onLogin }: LoginProps) {
                         Login
                     </button>
                 </form>
-                <div className="mt-4 text-center text-xs text-gray-500">
-                    Use admin@fresqo.com / admin123
+                <div className="mt-8 text-center">
+                    <p className="text-sm text-fresqo-gray bg-white py-2 px-4 rounded-full inline-block shadow-sm">
+                        Use fresqo.in@gmail.com / admin123
+                    </p>
                 </div>
             </div>
         </div>

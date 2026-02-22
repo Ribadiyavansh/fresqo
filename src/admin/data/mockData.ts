@@ -500,7 +500,7 @@ export const mockAdmins: Admin[] = [
   {
     id: 'A1',
     name: 'Super Admin',
-    email: 'admin@fresqo.com',
+    email: 'fresqo.in@gmail.com',
     role: 'SUPER_ADMIN',
     isActive: true,
     createdAt: '2024-01-01T00:00:00Z',
@@ -509,7 +509,7 @@ export const mockAdmins: Admin[] = [
   {
     id: 'A2',
     name: 'Operations Manager',
-    email: 'ops@fresqo.com',
+    email: 'fresqo.in@gmail.com',
     role: 'OPERATIONS_ADMIN',
     isActive: true,
     createdAt: '2024-01-05T00:00:00Z',
@@ -517,8 +517,8 @@ export const mockAdmins: Admin[] = [
   },
   {
     id: 'A3',
-    name: 'Support Staff',
-    email: 'support@fresqo.com',
+    name: 'Customer Support',
+    email: 'fresqo.in@gmail.com',
     role: 'OPERATIONS_ADMIN',
     isActive: false,
     createdAt: '2024-01-10T00:00:00Z',
@@ -622,7 +622,7 @@ export const mockNotifications: Notification[] = [
 // Mock Settings
 export const mockGeneralSettings: GeneralSettings = {
   brandName: 'Fresqo',
-  supportEmail: 'support@fresqo.com',
+  supportEmail: 'fresqo.in@gmail.com',
   supportPhone: '+91 1800 123 4567',
   orderPrefix: 'FRQ',
 };

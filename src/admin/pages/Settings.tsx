@@ -12,7 +12,7 @@ export default function Settings() {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Support Email</label>
-                        <input type="email" className="w-full p-2 border rounded" defaultValue="support@fresqo.com" />
+                        <input type="email" className="w-full p-2 border rounded" defaultValue="fresqo.in@gmail.com" />
                     </div>
                     <button className="bg-fresqo-dark text-white px-4 py-2 rounded">Save Changes</button>
                 </div>

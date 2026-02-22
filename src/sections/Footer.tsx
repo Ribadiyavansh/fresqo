@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
-import { 
-  Instagram, 
-  Twitter, 
-  Facebook, 
+import {
+  Instagram,
+  Twitter,
+  Facebook,
   Youtube,
   Mail,
   Phone,
@@ -100,9 +100,9 @@ export default function Footer() {
           <div>
             <h4 className="font-oswald text-lg font-bold mb-6">Contact Us</h4>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-fresqo-lime flex-shrink-0 mt-0.5" />
-                <span className="text-gray-400">hello@fresqo.in</span>
+              <li className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-fresqo-lime" />
+                <span className="text-gray-400">fresqo.in@gmail.com</span>
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-fresqo-lime flex-shrink-0 mt-0.5" />
@@ -111,8 +111,8 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-fresqo-lime flex-shrink-0 mt-0.5" />
                 <span className="text-gray-400">
-                  123, Innovation Hub,<br />
-                  Bangalore, Karnataka 560001
+                  bapa sitaram chowk,<br />
+                  mavadi, rajkot-360004, gujrat
                 </span>
               </li>
             </ul>
@@ -147,7 +147,7 @@ export default function Footer() {
           <p className="text-gray-400 text-sm text-center md:text-left">
             © {currentYear} Fresqo. All Rights Reserved. Made with 💚 in India
           </p>
-          
+
           <div className="flex items-center gap-6">
             <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
               Privacy Policy

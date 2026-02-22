@@ -52,8 +52,8 @@ export default function Sidebar({ isCollapsed, onToggle, className = '' }: Sideb
                     <div className="flex items-center gap-3 px-2">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-fresqo-lime to-fresqo-aqua flex items-center justify-center text-fresqo-dark font-bold text-xs">A</div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-white truncate">Admin User</p>
-                            <p className="text-xs text-gray-400 truncate">admin@fresqo.com</p>
+                            <p className="text-sm font-medium text-white truncate">Super Admin</p>
+                            <p className="text-xs text-gray-400 truncate">fresqo.in@gmail.com</p>
                         </div>
                     </div>
                 )}

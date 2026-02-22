@@ -14,7 +14,8 @@ import {
   User,
   CreditCard,
   Share2,
-  CheckCircle2
+  CheckCircle2,
+  Trash2
 } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -290,7 +291,7 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
                               className="absolute top-2 right-2 p-1 text-fresqo-gray hover:text-red-500 transition-colors"
                               title="Remove item"
                             >
-                              <Minus className="w-5 h-5 rotate-45" /> {/* Use Minus rotated instead of X if X isn't imported from lucide */}
+                              <Trash2 className="w-5 h-5" />
                             </button>
                           )}
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

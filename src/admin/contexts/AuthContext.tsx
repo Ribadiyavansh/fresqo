@@ -15,32 +15,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<Admin | null>(null);
 
-  const login = useCallback(async (email: string, password: string): Promise<boolean> => {
-    // Mock authentication - in real app, this would be an API call
-    if (email === 'admin@fresqo.com' && password === 'admin123') {
-      const mockUser: Admin = {
-        id: 'A1',
-        name: 'Super Admin',
-        email: 'admin@fresqo.com',
+  const login = useCallback(async (email: string, password: string) => {
+    // Demo authentication logic
+    if (email === 'fresqo.in@gmail.com' && password === 'admin123') {
+      const user: Admin = {
+        id: '1',
+        name: 'Admin User',
+        email: 'fresqo.in@gmail.com',
         role: 'SUPER_ADMIN',
         isActive: true,
         createdAt: '2024-01-01T00:00:00Z',
         lastLogin: new Date().toISOString(),
       };
-      setUser(mockUser);
+      setUser(user);
+      localStorage.setItem('fresqo_admin_user', JSON.stringify(user));
       setIsAuthenticated(true);
       return true;
-    } else if (email === 'ops@fresqo.com' && password === 'ops') {
-      const mockUser: Admin = {
-        id: 'A2',
+    } else if (email === 'fresqo.in@gmail.com' && password === 'ops') {
+      const user: Admin = {
+        id: '2',
         name: 'Operations Manager',
-        email: 'ops@fresqo.com',
+        email: 'fresqo.in@gmail.com',
         role: 'OPERATIONS_ADMIN',
         isActive: true,
         createdAt: '2024-01-05T00:00:00Z',
         lastLogin: new Date().toISOString(),
       };
-      setUser(mockUser);
+      setUser(user);
+      localStorage.setItem('fresqo_admin_user', JSON.stringify(user));
       setIsAuthenticated(true);
       return true;
     }

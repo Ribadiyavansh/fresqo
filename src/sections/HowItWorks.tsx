@@ -38,7 +38,7 @@ export default function HowItWorks() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const stepElements = stepsRef.current?.querySelectorAll('.step-item');
-      
+
       if (stepElements) {
         gsap.fromTo(
           stepElements,
@@ -89,11 +89,8 @@ export default function HowItWorks() {
 
               <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-fresqo-lime/50 transition-colors">
                 {/* Step Number */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-4xl font-oswald font-bold text-fresqo-lime/30">
-                    {step.number}
-                  </span>
-                  <div className="w-12 h-12 gradient-bg rounded-xl flex items-center justify-center">
+                <div className="flex justify-end mb-4">
+                  <div className="w-12 h-12 gradient-bg rounded-xl flex items-center justify-center shadow-sm">
                     <span className="text-xl font-bold text-fresqo-charcoal">{index + 1}</span>
                   </div>
                 </div>
