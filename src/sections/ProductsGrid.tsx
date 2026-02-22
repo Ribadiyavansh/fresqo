@@ -11,6 +11,8 @@ interface Product {
   name: string;
   description: string;
   price: number;
+  originalPrice: number;
+  discount: string;
   image: string;
   ingredients: string[];
 }
@@ -24,7 +26,9 @@ const products: Product[] = [
     id: 1,
     name: 'Variety Pack',
     description: '4 unique flavors in one pack',
-    price: 350,
+    price: 349,
+    originalPrice: 449,
+    discount: '22% OFF',
     image: '/images/product-variety.jpg',
     ingredients: ['Natural fruit extracts', 'Citric acid', 'Sodium bicarbonate', 'Natural colors'],
   },
@@ -32,7 +36,9 @@ const products: Product[] = [
     id: 2,
     name: 'Cosmopolitan Bomb',
     description: 'Classic cranberry-citrus blend',
-    price: 350,
+    price: 349,
+    originalPrice: 449,
+    discount: '22% OFF',
     image: '/images/product-cosmopolitan.jpg',
     ingredients: ['Cranberry extract', 'Lime extract', 'Orange peel', 'Natural pink color'],
   },
@@ -40,7 +46,9 @@ const products: Product[] = [
     id: 3,
     name: 'Sex on the Beach',
     description: 'Tropical peach-orange delight',
-    price: 350,
+    price: 349,
+    originalPrice: 449,
+    discount: '22% OFF',
     image: '/images/product-sexonthebeach.jpg',
     ingredients: ['Peach extract', 'Orange extract', 'Cranberry', 'Natural orange color'],
   },
@@ -48,7 +56,9 @@ const products: Product[] = [
     id: 4,
     name: 'Kala Khatta Bomb',
     description: 'Authentic Indian flavor',
-    price: 350,
+    price: 349,
+    originalPrice: 449,
+    discount: '22% OFF',
     image: '/images/product-kalakhatta.jpg',
     ingredients: ['Kala khatta extract', 'Black salt', 'Lime', 'Natural purple color'],
   },
@@ -56,7 +66,9 @@ const products: Product[] = [
     id: 5,
     name: 'Watermelon Mint',
     description: 'Refreshing summer favorite',
-    price: 350,
+    price: 349,
+    originalPrice: 449,
+    discount: '22% OFF',
     image: '/images/product-watermelon.jpg',
     ingredients: ['Watermelon extract', 'Mint extract', 'Lime', 'Natural green-pink color'],
   },
@@ -166,7 +178,11 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
                 <p className="text-sm text-fresqo-gray mb-4">{product.description}</p>
 
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-2xl text-fresqo-dark">₹{product.price}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-2xl text-fresqo-dark">₹{product.price}</span>
+                    <span className="text-sm text-fresqo-gray line-through">₹{product.originalPrice}</span>
+                    <span className="text-xs font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">{product.discount}</span>
+                  </div>
                   <button
                     onClick={() => {
                       setSelectedProduct(product);
@@ -240,7 +256,11 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
 
                   {/* Price */}
                   <div className="flex items-center gap-4 mb-6">
-                    <span className="font-bold text-3xl text-fresqo-dark">₹{selectedProduct.price}</span>
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-bold text-3xl text-fresqo-dark">₹{selectedProduct.price}</span>
+                      <span className="text-lg text-fresqo-gray line-through">₹{selectedProduct.originalPrice}</span>
+                      <span className="text-sm font-bold text-green-600 bg-green-100 px-2.5 py-1 rounded-full">{selectedProduct.discount}</span>
+                    </div>
                     <span className="text-sm text-fresqo-gray">per pack</span>
                   </div>
 

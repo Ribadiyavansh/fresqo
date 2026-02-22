@@ -24,6 +24,8 @@ interface CartItem {
     id: number;
     name: string;
     price: number;
+    originalPrice: number;
+    discount: string;
     image: string;
   };
   quantity: number;
@@ -35,11 +37,11 @@ interface PreOrderFormProps {
 }
 
 const products = [
-  { id: 1, name: 'Variety Pack', price: 350, image: '/images/product-variety.jpg' },
-  { id: 2, name: 'Cosmopolitan Bomb', price: 350, image: '/images/product-cosmopolitan.jpg' },
-  { id: 3, name: 'Sex on the Beach', price: 350, image: '/images/product-sexonthebeach.jpg' },
-  { id: 4, name: 'Kala Khatta Bomb', price: 350, image: '/images/product-kalakhatta.jpg' },
-  { id: 5, name: 'Watermelon Mint', price: 350, image: '/images/product-watermelon.jpg' },
+  { id: 1, name: 'Variety Pack', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-variety.jpg' },
+  { id: 2, name: 'Cosmopolitan Bomb', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-cosmopolitan.jpg' },
+  { id: 3, name: 'Sex on the Beach', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-sexonthebeach.jpg' },
+  { id: 4, name: 'Kala Khatta Bomb', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-kalakhatta.jpg' },
+  { id: 5, name: 'Watermelon Mint', price: 349, originalPrice: 449, discount: '22% OFF', image: '/images/product-watermelon.jpg' },
 ];
 
 const states = [
@@ -340,7 +342,10 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
                                     <Plus className="w-3 h-3" />
                                   </button>
                                 </div>
-                                <span className="font-semibold text-fresqo-dark text-sm">₹{item.product.price * item.quantity}</span>
+                                <div className="flex items-baseline gap-2">
+                                  <span className="font-semibold text-fresqo-dark text-sm">₹{item.product.price * item.quantity}</span>
+                                  <span className="text-xs text-fresqo-gray line-through">₹{item.product.originalPrice * item.quantity}</span>
+                                </div>
                               </div>
                               <p className="text-[10px] text-fresqo-gray mt-1">*maximum 4 per order</p>
                             </div>

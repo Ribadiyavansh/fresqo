@@ -7,6 +7,8 @@ interface CartItem {
     id: number;
     name: string;
     price: number;
+    originalPrice: number;
+    discount: string;
     image: string;
   };
   quantity: number;
@@ -137,9 +139,12 @@ export default function CartDrawer({
                           </button>
                         </div>
 
-                        <p className="text-fresqo-aqua font-bold mb-3">
-                          ₹{item.product.price}
-                        </p>
+                        <div className="flex items-baseline gap-2 mb-3">
+                          <p className="text-fresqo-aqua font-bold">
+                            ₹{item.product.price}
+                          </p>
+                          <span className="text-xs text-fresqo-gray line-through">₹{item.product.originalPrice}</span>
+                        </div>
 
                         {/* Quantity Controls */}
                         <div>

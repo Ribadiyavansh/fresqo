@@ -18,6 +18,8 @@ export interface CartItem {
         id: number;
         name: string;
         price: number;
+        originalPrice: number;
+        discount: string;
         image: string;
     };
     quantity: number;
@@ -25,7 +27,7 @@ export interface CartItem {
 
 export interface MainLayoutContextType {
     cart: CartItem[];
-    handleAddToCart: (product: { id: number; name: string; price: number; image: string }, quantity: number) => void;
+    handleAddToCart: (product: { id: number; name: string; price: number; originalPrice: number; discount: string; image: string }, quantity: number) => void;
     handleClearCart: () => void;
 }
 
@@ -38,7 +40,7 @@ export default function MainLayout() {
     const [isCartOpen, setIsCartOpen] = useState(false);
 
     // Add to cart
-    const handleAddToCart = (product: { id: number; name: string; price: number; image: string }, quantity: number) => {
+    const handleAddToCart = (product: { id: number; name: string; price: number; originalPrice: number; discount: string; image: string }, quantity: number) => {
         const cappedQuantity = Math.min(4, quantity);
         setCart((prevCart) => {
             const existingItem = prevCart.find((item) => item.product.id === product.id);
