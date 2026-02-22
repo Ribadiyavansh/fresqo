@@ -34,7 +34,9 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-4">
               <a
-                href="#"
+                href="https://www.instagram.com/fresqo.in?igsh=MWc4N3h6MXVkY2cyeQ=="
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-fresqo-lime hover:text-fresqo-charcoal transition-colors"
                 aria-label="Instagram"
               >
