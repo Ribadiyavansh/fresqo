@@ -30,6 +30,7 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
     { label: 'Flavours', href: '#products' },
     { label: 'How It Works', href: '#how-it-works' },
     { label: 'FAQs', href: '#faq' },
+    { label: 'Blog', href: '#blog' },
   ];
 
   const scrollToSection = (href: string) => {

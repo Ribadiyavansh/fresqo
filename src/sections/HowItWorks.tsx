@@ -116,19 +116,6 @@ export default function HowItWorks() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="mt-16 text-center">
-          <a
-            href="#pre-order"
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector('#pre-order')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="inline-flex items-center gap-2 btn-primary"
-          >
-            Start Your Order
-          </a>
-        </div>
       </div>
     </section>
   );

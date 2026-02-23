@@ -2,8 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Sparkles } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,7 +12,6 @@ export default function HeroSection() {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -126,13 +124,6 @@ export default function HeroSection() {
             </p>
 
             <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button
-                onClick={() => navigate('/checkout')}
-                className="btn-primary flex items-center justify-center gap-2 group"
-              >
-                Pre-Order Now – COD
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
               <button
                 onClick={() => scrollToSection('#products')}
                 className="px-6 py-3 border-2 border-fresqo-dark text-fresqo-dark font-semibold rounded-xl hover:bg-fresqo-dark hover:text-white transition-all duration-300"

@@ -6,6 +6,7 @@ import HowItWorks from '@/sections/HowItWorks';
 import Ingredients from '@/sections/Ingredients';
 import Testimonials from '@/sections/Testimonials';
 import FAQ from '@/sections/FAQ';
+import BlogSection from '@/sections/BlogSection';
 import type { MainLayoutContextType } from '@/layouts/MainLayout';
 
 export default function Landing() {
@@ -30,6 +31,9 @@ export default function Landing() {
 
             {/* Testimonials */}
             <Testimonials />
+
+            {/* Blog */}
+            <BlogSection />
 
             {/* FAQ */}
             <FAQ />
