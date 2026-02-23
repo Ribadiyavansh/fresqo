@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, ShoppingBag } from 'lucide-react';
+import { Menu, X, ShoppingBag, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 interface NavbarProps {
   cartCount: number;
   onCartClick: () => void;
@@ -11,6 +12,9 @@ interface NavbarProps {
 export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { user, isLoggedIn, logout, openAuthModal } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,10 +91,61 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
                 )}
               </button>
 
+              {/* Auth Button - Desktop */}
+              {isLoggedIn ? (
+                <div className="hidden md:block relative">
+                  <button
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-fresqo-cream hover:bg-fresqo-lime/20 text-fresqo-dark transition-colors"
+                    aria-label="User profile"
+                  >
+                    <User className="w-5 h-5" />
+                  </button>
+
+                  <AnimatePresence>
+                    {isProfileOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-lift border border-fresqo-border overflow-hidden z-50 flex flex-col"
+                      >
+                        <div className="p-4 border-b border-fresqo-border bg-fresqo-cream/50">
+                          <p className="font-semibold text-fresqo-dark truncate">{user?.name}</p>
+                          <p className="text-sm text-fresqo-gray truncate mt-0.5">{user?.email}</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            logout();
+                            setIsProfileOpen(false);
+                            navigate('/');
+                          }}
+                          className="w-full text-left px-5 py-3.5 text-sm text-red-500 hover:bg-fresqo-cream transition-colors font-medium flex items-center justify-between"
+                        >
+                          Logout
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <button
+                  onClick={() => openAuthModal('login')}
+                  className="hidden md:block text-sm font-medium text-fresqo-dark hover:text-fresqo-aqua transition-colors"
+                >
+                  Sign In
+                </button>
+              )}
+
               {/* Pre-Order Button - Desktop */}
               <a
-                href="#pre-order"
-                onClick={(e) => { e.preventDefault(); scrollToSection('#pre-order'); }}
+                href="/#pre-order"
+                onClick={(e) => {
+                  if (window.location.pathname === '/') {
+                    e.preventDefault(); scrollToSection('#pre-order');
+                  }
+                }}
                 className="hidden md:block bg-fresqo-lime text-fresqo-dark px-6 py-2 rounded-full font-semibold hover:bg-fresqo-lime/90 transition-colors text-sm"
               >
                 Pre-Order Now
@@ -133,10 +188,38 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
                   {link.label}
                 </a>
               ))}
+              {isLoggedIn ? (
+                <button
+                  onClick={() => {
+                    logout();
+                    setIsMobileMenuOpen(false);
+                    navigate('/');
+                  }}
+                  className="text-fresqo-dark hover:text-fresqo-aqua transition-colors text-lg font-medium py-2 text-left"
+                >
+                  Logout ({user?.name})
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    openAuthModal('login');
+                  }}
+                  className="text-fresqo-dark hover:text-fresqo-aqua transition-colors text-lg font-medium py-2 text-left"
+                >
+                  Sign In
+                </button>
+              )}
               <a
-                href="#pre-order"
-                onClick={(e) => { e.preventDefault(); scrollToSection('#pre-order'); }}
-                className="btn-primary text-center mt-4"
+                href="/#pre-order"
+                onClick={(e) => {
+                  if (window.location.pathname === '/') {
+                    e.preventDefault(); scrollToSection('#pre-order');
+                  } else {
+                    setIsMobileMenuOpen(false);
+                  }
+                }}
+                className="bg-fresqo-lime text-fresqo-dark px-6 py-3 rounded-full font-semibold text-center mt-4"
               >
                 Pre-Order Now
               </a>

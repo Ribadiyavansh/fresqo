@@ -8,7 +8,10 @@ import CustomCursor from '@/components/CustomCursor';
 import NoiseOverlay from '@/components/NoiseOverlay';
 import AnnouncementBar from '@/sections/AnnouncementBar';
 import Navbar from '@/sections/Navbar';
-import CartDrawer from '@/sections/CartDrawer'; import Footer from '@/sections/Footer';
+import CartDrawer from '@/sections/CartDrawer';
+import Footer from '@/sections/Footer';
+import AuthModal from '@/components/AuthModal';
+import { useAuth } from '@/contexts/AuthContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,6 +43,8 @@ export default function MainLayout() {
 
     // Announcement state
     const [isAnnouncementVisible, setIsAnnouncementVisible] = useState(true);
+
+    const { isLoggedIn, openAuthModal } = useAuth();
 
     // Add to cart
     const handleAddToCart = (product: { id: number; name: string; price: number; originalPrice: number; discount: string; image: string }, quantity: number) => {
@@ -87,15 +92,17 @@ export default function MainLayout() {
     // We'll keep this check.
     const handleCheckout = () => {
         setIsCartOpen(false);
+
+        if (!isLoggedIn) {
+            openAuthModal('signup', 'checkout');
+            return;
+        }
+
         setTimeout(() => {
             const preOrderSection = document.querySelector('#pre-order');
             if (preOrderSection) {
                 preOrderSection.scrollIntoView({ behavior: 'smooth' });
             } else {
-                // Fallback or navigate to home#pre-order if not found?
-                // For now, assume we are on a page with it, or do nothing.
-                // Or if we are not on home, we might want to navigate('MVC approach').
-                // Let's keep it simple for now as per minimal change strategy.
                 window.location.hash = 'pre-order';
             }
         }, 300);
@@ -176,6 +183,9 @@ export default function MainLayout() {
                 onRemoveItem={handleRemoveItem}
                 onCheckout={handleCheckout}
             />
+
+            {/* Auth Modal Popup */}
+            <AuthModal />
 
             {/* Main content */}
             <main>

@@ -17,6 +17,7 @@ import {
   CheckCircle2,
   Trash2
 } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,6 +60,9 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [countdown, setCountdown] = useState(5);
+  const [pendingCheckout, setPendingCheckout] = useState(false);
+
+  const { isLoggedIn, openAuthModal } = useAuth();
 
   // Form state
   const [orderItems, setOrderItems] = useState<{ id: string, product: typeof products[0], quantity: number }[]>([
@@ -74,6 +78,14 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
     pincode: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Automatic checkout progression after login
+  useEffect(() => {
+    if (isLoggedIn && pendingCheckout) {
+      setStep(2);
+      setPendingCheckout(false);
+    }
+  }, [isLoggedIn, pendingCheckout]);
 
   // Update selected product based on cart
   useEffect(() => {
@@ -373,7 +385,14 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
                     </div>
 
                     <button
-                      onClick={() => setStep(2)}
+                      onClick={() => {
+                        if (!isLoggedIn) {
+                          setPendingCheckout(true);
+                          openAuthModal('signup', 'checkout');
+                          return;
+                        }
+                        setStep(2);
+                      }}
                       className="w-full btn-primary"
                     >
                       Continue
