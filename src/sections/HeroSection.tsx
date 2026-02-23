@@ -67,16 +67,7 @@ export default function HeroSection() {
         }
       );
 
-      // Scroll-triggered parallax
-      gsap.to(imageRef.current, {
-        y: -50,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
+      // Scroll-triggered parallax (Removed imageRef scrub to prevent conflicting transforms with framer-motion floating)
     }, sectionRef);
 
     return () => ctx.revert();
@@ -180,14 +171,24 @@ export default function HeroSection() {
               {/* Glow effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-fresqo-lime/30 to-fresqo-aqua/30 rounded-full blur-3xl scale-110" />
 
-              {/* Main image */}
-              <div className="relative rounded-3xl overflow-hidden shadow-lift">
+              {/* Main image with infinite floating animation */}
+              <motion.div
+                className="relative rounded-3xl overflow-hidden shadow-lift"
+                animate={{
+                  y: [-15, 15, -15], // Floating limits roughly matching the 4.9/5 box top and 350 box bottom
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
                 <img
-                  src="/images/hero-bomb.jpg"
+                  src="/images/hero-cocktail.png"
                   alt="Fresqo Cocktail Ball fizzing in a glass"
                   className="w-full h-auto object-cover"
                 />
-              </div>
+              </motion.div>
 
               {/* Floating badge */}
               <motion.div

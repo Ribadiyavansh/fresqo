@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, X, ShoppingBag, ChevronRight } from 'lucide-react';
+import ImageSlider from '@/components/ImageSlider';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,7 +14,7 @@ interface Product {
   price: number;
   originalPrice: number;
   discount: string;
-  image: string;
+  images: string[];
   ingredients: string[];
 }
 
@@ -29,7 +30,7 @@ const products: Product[] = [
     price: 349,
     originalPrice: 449,
     discount: '22% OFF',
-    image: '/images/product-variety.jpg',
+    images: ['/images/product-variety.jpg', '/images/product-variety.jpg', '/images/product-variety.jpg', '/images/product-variety.jpg'],
     ingredients: ['Natural fruit extracts', 'Citric acid', 'Sodium bicarbonate', 'Natural colors'],
   },
   {
@@ -39,7 +40,7 @@ const products: Product[] = [
     price: 349,
     originalPrice: 449,
     discount: '22% OFF',
-    image: '/images/product-cosmopolitan.jpg',
+    images: ['/images/product-cosmopolitan.jpg', '/images/product-cosmopolitan.jpg', '/images/product-cosmopolitan.jpg', '/images/product-cosmopolitan.jpg'],
     ingredients: ['Cranberry extract', 'Lime extract', 'Orange peel', 'Natural pink color'],
   },
   {
@@ -49,7 +50,7 @@ const products: Product[] = [
     price: 349,
     originalPrice: 449,
     discount: '22% OFF',
-    image: '/images/product-sexonthebeach.jpg',
+    images: ['/images/product-sexonthebeach.jpg', '/images/product-sexonthebeach.jpg', '/images/product-sexonthebeach.jpg', '/images/product-sexonthebeach.jpg'],
     ingredients: ['Peach extract', 'Orange extract', 'Cranberry', 'Natural orange color'],
   },
   {
@@ -59,7 +60,7 @@ const products: Product[] = [
     price: 349,
     originalPrice: 449,
     discount: '22% OFF',
-    image: '/images/product-kalakhatta.jpg',
+    images: ['/images/product-kalakhatta.jpg', '/images/product-kalakhatta.jpg', '/images/product-kalakhatta.jpg', '/images/product-kalakhatta.jpg'],
     ingredients: ['Kala khatta extract', 'Black salt', 'Lime', 'Natural purple color'],
   },
   {
@@ -69,7 +70,7 @@ const products: Product[] = [
     price: 349,
     originalPrice: 449,
     discount: '22% OFF',
-    image: '/images/product-watermelon.jpg',
+    images: ['/images/product-watermelon.jpg', '/images/product-watermelon.jpg', '/images/product-watermelon.jpg', '/images/product-watermelon.jpg'],
     ingredients: ['Watermelon extract', 'Mint extract', 'Lime', 'Natural green-pink color'],
   },
 ];
@@ -160,14 +161,9 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
                 setQuantity(1);
               }}
             >
-              {/* Product Image */}
-              <div className="relative aspect-square overflow-hidden bg-fresqo-cream">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* Product Image Slider */}
+              <div className="relative aspect-square overflow-hidden bg-fresqo-cream rounded-t-2xl">
+                <ImageSlider images={product.images} productName={product.name} interval={3500 + (product.id * 500)} />
               </div>
 
               {/* Product Info */}
@@ -238,13 +234,9 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
                   <X className="w-5 h-5" />
                 </button>
 
-                {/* Product Image */}
-                <div className="aspect-video overflow-hidden">
-                  <img
-                    src={selectedProduct.image}
-                    alt={selectedProduct.name}
-                    className="w-full h-full object-cover"
-                  />
+                {/* Product Image Slider */}
+                <div className="aspect-video overflow-hidden rounded-t-3xl relative">
+                  <ImageSlider images={selectedProduct.images} productName={selectedProduct.name} interval={4000} showDots={true} showArrows={true} />
                 </div>
 
                 {/* Product Details */}

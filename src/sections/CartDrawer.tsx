@@ -9,7 +9,7 @@ interface CartItem {
     price: number;
     originalPrice: number;
     discount: string;
-    image: string;
+    images: string[];
   };
   quantity: number;
 }
@@ -119,7 +119,7 @@ export default function CartDrawer({
                       {/* Product Image */}
                       <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                         <img
-                          src={item.product.image}
+                          src={item.product.images[0]}
                           alt={item.product.name}
                           className="w-full h-full object-cover"
                         />

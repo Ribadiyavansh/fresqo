@@ -22,14 +22,14 @@ export interface CartItem {
         price: number;
         originalPrice: number;
         discount: string;
-        image: string;
+        images: string[];
     };
     quantity: number;
 }
 
 export interface MainLayoutContextType {
     cart: CartItem[];
-    handleAddToCart: (product: { id: number; name: string; price: number; originalPrice: number; discount: string; image: string }, quantity: number) => void;
+    handleAddToCart: (product: { id: number; name: string; price: number; originalPrice: number; discount: string; images: string[] }, quantity: number) => void;
     handleClearCart: () => void;
 }
 
@@ -47,7 +47,7 @@ export default function MainLayout() {
     const { isLoggedIn, openAuthModal } = useAuth();
 
     // Add to cart
-    const handleAddToCart = (product: { id: number; name: string; price: number; originalPrice: number; discount: string; image: string }, quantity: number) => {
+    const handleAddToCart = (product: { id: number; name: string; price: number; originalPrice: number; discount: string; images: string[] }, quantity: number) => {
         const cappedQuantity = Math.min(4, quantity);
         setCart((prevCart) => {
             const existingItem = prevCart.find((item) => item.product.id === product.id);
