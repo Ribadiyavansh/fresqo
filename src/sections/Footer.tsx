@@ -91,7 +91,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#pre-order" className="text-gray-400 hover:text-fresqo-lime transition-colors">
+                <a href="/checkout" className="text-gray-400 hover:text-fresqo-lime transition-colors">
                   Pre-Order
                 </a>
               </li>

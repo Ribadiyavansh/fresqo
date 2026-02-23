@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -40,6 +40,9 @@ export default function MainLayout() {
     // Cart state
     const [cart, setCart] = useState<CartItem[]>([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
+
+    // Router navigation hook
+    const navigate = useNavigate();
 
     // Announcement state
     const [isAnnouncementVisible, setIsAnnouncementVisible] = useState(true);
@@ -87,9 +90,7 @@ export default function MainLayout() {
         setCart([]);
     };
 
-    // Handle checkout - scroll to pre-order section
-    // Note: Since Landing is separate, scrolling to #pre-order requires it to exist on the current page.
-    // We'll keep this check.
+    // Handle checkout - redirect to checkout page
     const handleCheckout = () => {
         setIsCartOpen(false);
 
@@ -99,12 +100,7 @@ export default function MainLayout() {
         }
 
         setTimeout(() => {
-            const preOrderSection = document.querySelector('#pre-order');
-            if (preOrderSection) {
-                preOrderSection.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                window.location.hash = 'pre-order';
-            }
+            navigate('/checkout');
         }, 300);
     };
 

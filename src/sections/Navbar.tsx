@@ -33,6 +33,11 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
   ];
 
   const scrollToSection = (href: string) => {
+    if (window.location.pathname !== '/') {
+      navigate(`/${href}`);
+      setIsMobileMenuOpen(false);
+      return;
+    }
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -54,7 +59,7 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <a
-              href="#home"
+              href="/"
               onClick={(e) => { e.preventDefault(); scrollToSection('#home'); }}
               className="font-oswald text-2xl md:text-3xl font-bold text-fresqo-dark"
             >
@@ -138,19 +143,6 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
                 </button>
               )}
 
-              {/* Pre-Order Button - Desktop */}
-              <a
-                href="/#pre-order"
-                onClick={(e) => {
-                  if (window.location.pathname === '/') {
-                    e.preventDefault(); scrollToSection('#pre-order');
-                  }
-                }}
-                className="hidden md:block bg-fresqo-lime text-fresqo-dark px-6 py-2 rounded-full font-semibold hover:bg-fresqo-lime/90 transition-colors text-sm"
-              >
-                Pre-Order Now
-              </a>
-
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -210,19 +202,6 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
                   Sign In
                 </button>
               )}
-              <a
-                href="/#pre-order"
-                onClick={(e) => {
-                  if (window.location.pathname === '/') {
-                    e.preventDefault(); scrollToSection('#pre-order');
-                  } else {
-                    setIsMobileMenuOpen(false);
-                  }
-                }}
-                className="bg-fresqo-lime text-fresqo-dark px-6 py-3 rounded-full font-semibold text-center mt-4"
-              >
-                Pre-Order Now
-              </a>
             </div>
           </motion.div>
         )}
