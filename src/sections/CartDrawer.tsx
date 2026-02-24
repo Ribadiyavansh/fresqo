@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { X, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 
 interface CartItem {
@@ -29,8 +30,9 @@ export default function CartDrawer({
   cart,
   onUpdateQuantity,
   onRemoveItem,
-  onCheckout
+  onCheckout,
 }: CartDrawerProps) {
+  const navigate = useNavigate();
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalAmount = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
@@ -103,7 +105,14 @@ export default function CartDrawer({
                     Add some delicious cocktail balls to get started!
                   </p>
                   <button
-                    onClick={onClose}
+                    onClick={() => {
+                      onClose();
+                      if (window.location.pathname !== '/') {
+                        navigate('/#products');
+                      } else {
+                        document.querySelector('#products')?.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
                     className="btn-primary"
                   >
                     Browse Products

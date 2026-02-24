@@ -166,6 +166,19 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
       // Generate order ID
       const newOrderId = 'FQ' + Date.now().toString().slice(-8);
       setOrderId(newOrderId);
+
+      const newOrder = {
+        id: newOrderId,
+        date: new Date().toISOString(),
+        items: orderItems,
+        totalAmount,
+        status: 'Processing',
+        shippingDetails: formData
+      };
+
+      const existingOrders = JSON.parse(localStorage.getItem('fresqo_orders') || '[]');
+      localStorage.setItem('fresqo_orders', JSON.stringify([newOrder, ...existingOrders]));
+
       setCountdown(5);
       setIsSubmitted(true);
       onClearCart();

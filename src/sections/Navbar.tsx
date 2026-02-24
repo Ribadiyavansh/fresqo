@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X, ShoppingBag, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,17 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user, isLoggedIn, logout, openAuthModal } = useAuth();
   const navigate = useNavigate();
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -99,7 +109,7 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
 
               {/* Auth Button - Desktop */}
               {isLoggedIn ? (
-                <div className="hidden md:block relative">
+                <div className="hidden md:block relative" ref={profileDropdownRef}>
                   <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
                     className="flex items-center justify-center w-10 h-10 rounded-full bg-fresqo-cream hover:bg-fresqo-lime/20 text-fresqo-dark transition-colors"
@@ -121,6 +131,15 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
                           <p className="font-semibold text-fresqo-dark truncate">{user?.name}</p>
                           <p className="text-sm text-fresqo-gray truncate mt-0.5">{user?.email}</p>
                         </div>
+                        <button
+                          onClick={() => {
+                            setIsProfileOpen(false);
+                            navigate('/my-orders');
+                          }}
+                          className="w-full text-left px-5 py-3.5 text-sm text-fresqo-dark hover:bg-fresqo-cream transition-colors font-medium flex items-center justify-between border-b border-fresqo-border lg:border-transparent"
+                        >
+                          My Orders
+                        </button>
                         <button
                           onClick={() => {
                             logout();
@@ -182,16 +201,27 @@ export default function Navbar({ cartCount, onCartClick, isAnnouncementVisible }
                 </a>
               ))}
               {isLoggedIn ? (
-                <button
-                  onClick={() => {
-                    logout();
-                    setIsMobileMenuOpen(false);
-                    navigate('/');
-                  }}
-                  className="text-fresqo-dark hover:text-fresqo-aqua transition-colors text-lg font-medium py-2 text-left"
-                >
-                  Logout ({user?.name})
-                </button>
+                <>
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      navigate('/my-orders');
+                    }}
+                    className="text-fresqo-dark hover:text-fresqo-aqua transition-colors text-lg font-medium py-2 text-left"
+                  >
+                    My Orders
+                  </button>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsMobileMenuOpen(false);
+                      navigate('/');
+                    }}
+                    className="text-fresqo-dark hover:text-fresqo-aqua transition-colors text-lg font-medium py-2 text-left"
+                  >
+                    Logout ({user?.name})
+                  </button>
+                </>
               ) : (
                 <button
                   onClick={() => {

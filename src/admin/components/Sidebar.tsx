@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface SidebarProps {
     isCollapsed: boolean;
@@ -7,9 +9,16 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isCollapsed, onToggle, className = '' }: SidebarProps) {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 500);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
-        <div className={`bg-fresqo-dark text-white shadow-xl transition-all duration-300 flex flex-col ${className}`}>
-            <div className={`h-16 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-6'} border-b border-gray-800`}>
+        <div className={`bg-fresqo-dark text-white shadow-xl transition-all duration-300 flex flex-col h-full min-h-0 ${className}`}>
+            <div className={`h-16 shrink-0 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-6'} border-b border-gray-800`}>
                 <h1 className="font-oswald font-bold text-2xl tracking-wider">
                     <span className="text-fresqo-lime">F</span>
                     {!isCollapsed && <span>RESQO</span>}
@@ -21,41 +30,71 @@ export default function Sidebar({ isCollapsed, onToggle, className = '' }: Sideb
                 )}
             </div>
 
-            <nav className="flex-1 p-3 space-y-1 overflow-y-auto py-6">
-                <div className="mb-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    {!isCollapsed && 'Overview'}
-                </div>
-                <NavItem to="/admin/dashboard" label="Dashboard" collapsed={isCollapsed} icon={<HomeIcon />} />
-                <NavItem to="/admin/analytics" label="Analytics" collapsed={isCollapsed} icon={<ChartIcon />} />
+            <nav className="flex-1 p-3 space-y-1 overflow-y-auto custom-scrollbar py-6">
+                {isLoading ? (
+                    <div className="space-y-6">
+                        {Array.from({ length: 3 }).map((_, sectionIdx) => (
+                            <div key={sectionIdx} className="space-y-3">
+                                {!isCollapsed && <Skeleton className="w-24 h-4 mx-3 bg-gray-800" />}
+                                <div className="space-y-2">
+                                    <Skeleton className={`h-11 rounded-lg bg-gray-800 ${isCollapsed ? 'w-11 mx-auto' : 'w-full'}`} />
+                                    <Skeleton className={`h-11 rounded-lg bg-gray-800 ${isCollapsed ? 'w-11 mx-auto' : 'w-full'}`} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="fade-in space-y-1">
+                        <div className="mb-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            {!isCollapsed && 'Overview'}
+                        </div>
+                        <NavItem to="/admin/dashboard" label="Dashboard" collapsed={isCollapsed} icon={<HomeIcon />} />
+                        <NavItem to="/admin/analytics" label="Analytics" collapsed={isCollapsed} icon={<ChartIcon />} />
 
-                <div className="mt-6 mb-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    {!isCollapsed && 'Management'}
-                </div>
-                <NavItem to="/admin/orders" label="Orders" collapsed={isCollapsed} icon={<ShoppingBagIcon />} />
-                <NavItem to="/admin/products" label="Products" collapsed={isCollapsed} icon={<BoxIcon />} />
-                <NavItem to="/admin/customers" label="Customers" collapsed={isCollapsed} icon={<UsersIcon />} />
+                        <div className="mt-6 mb-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            {!isCollapsed && 'Management'}
+                        </div>
+                        <NavItem to="/admin/orders" label="Orders" collapsed={isCollapsed} icon={<ShoppingBagIcon />} />
+                        <NavItem to="/admin/products" label="Products" collapsed={isCollapsed} icon={<BoxIcon />} />
+                        <NavItem to="/admin/customers" label="Customers" collapsed={isCollapsed} icon={<UsersIcon />} />
 
-                <div className="mt-6 mb-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    {!isCollapsed && 'System'}
-                </div>
-                <NavItem to="/admin/admin-management" label="Admins" collapsed={isCollapsed} icon={<ShieldIcon />} />
-                <NavItem to="/admin/settings" label="Settings" collapsed={isCollapsed} icon={<CogIcon />} />
+                        <div className="mt-6 mb-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            {!isCollapsed && 'System'}
+                        </div>
+                        <NavItem to="/admin-management" label="Admins" collapsed={isCollapsed} icon={<ShieldIcon />} />
+                        <NavItem to="/admin/settings" label="Settings" collapsed={isCollapsed} icon={<CogIcon />} />
+                    </div>
+                )}
             </nav>
 
-            <div className="p-4 border-t border-gray-800">
-                {isCollapsed && (
-                    <button onClick={onToggle} className="w-full flex justify-center text-gray-400 hover:text-white">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                    </button>
-                )}
-                {!isCollapsed && (
+            <div className="p-4 border-t shrink-0 border-gray-800">
+                {isLoading ? (
                     <div className="flex items-center gap-3 px-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-fresqo-lime to-fresqo-aqua flex items-center justify-center text-fresqo-dark font-bold text-xs">A</div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-white truncate">Super Admin</p>
-                            <p className="text-xs text-gray-400 truncate">fresqo.in@gmail.com</p>
-                        </div>
+                        <Skeleton className="w-8 h-8 rounded-full shrink-0 bg-gray-800" />
+                        {!isCollapsed && (
+                            <div className="flex-1 space-y-2">
+                                <Skeleton className="h-4 w-24 bg-gray-800" />
+                                <Skeleton className="h-3 w-32 bg-gray-800" />
+                            </div>
+                        )}
                     </div>
+                ) : (
+                    <>
+                        {isCollapsed && (
+                            <button onClick={onToggle} className="w-full flex justify-center text-gray-400 hover:text-white">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                            </button>
+                        )}
+                        {!isCollapsed && (
+                            <div className="flex items-center gap-3 px-2 fade-in">
+                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-fresqo-lime to-fresqo-aqua flex items-center justify-center text-fresqo-dark font-bold text-xs">A</div>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-white truncate">Super Admin</p>
+                                    <p className="text-xs text-gray-400 truncate">fresqo.in@gmail.com</p>
+                                </div>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>

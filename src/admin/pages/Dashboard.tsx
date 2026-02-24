@@ -1,7 +1,15 @@
-
+import { useState, useEffect } from 'react';
 import { mockDashboardMetrics, mockRevenueData, mockOrders } from '@/admin/data/mockData';
+import { Skeleton, SkeletonTableRow } from '@/components/ui/skeleton';
 
 export default function Dashboard() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
     // Calculate max revenue for chart scaling
     const maxRevenue = Math.max(...mockRevenueData.map(d => d.revenue));
 
@@ -22,36 +30,51 @@ export default function Dashboard() {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCard
-                    title="Total Revenue"
-                    value={`₹${mockDashboardMetrics.totalRevenue.toLocaleString()}`}
-                    trend={mockDashboardMetrics.revenueTrend}
-                    icon={<CurrencyIcon />}
-                    color="bg-fresqo-lime"
-                />
-                <StatCard
-                    title="Total Orders"
-                    value={mockDashboardMetrics.totalOrdersToday.toString()}
-                    trend={mockDashboardMetrics.totalOrdersTrend}
-                    icon={<ShoppingBagIcon />}
-                    color="bg-fresqo-aqua"
-                />
-                <StatCard
-                    title="Pending Orders"
-                    value={mockDashboardMetrics.pendingOrders.toString()}
-                    trend={mockDashboardMetrics.pendingTrend}
-                    icon={<ClockIcon />}
-                    color="bg-orange-200"
-                    trendReverse
-                />
-                <StatCard
-                    title="Cancelled"
-                    value={mockDashboardMetrics.cancelledOrders.toString()}
-                    trend={mockDashboardMetrics.cancelledTrend}
-                    icon={<XCircleIcon />}
-                    color="bg-red-200"
-                    trendReverse
-                />
+                {isLoading ? (
+                    Array.from({ length: 4 }).map((_, i) => (
+                        <div key={i} className="bg-white p-6 rounded-2xl shadow-soft border border-gray-100">
+                            <div className="flex justify-between items-start mb-4">
+                                <Skeleton className="w-12 h-12 rounded-xl" />
+                                <Skeleton className="w-12 h-6 rounded-full" />
+                            </div>
+                            <Skeleton className="w-24 h-4 mb-2" />
+                            <Skeleton className="w-20 h-8" />
+                        </div>
+                    ))
+                ) : (
+                    <>
+                        <StatCard
+                            title="Total Revenue"
+                            value={`₹${mockDashboardMetrics.totalRevenue.toLocaleString()}`}
+                            trend={mockDashboardMetrics.revenueTrend}
+                            icon={<CurrencyIcon />}
+                            color="bg-fresqo-lime"
+                        />
+                        <StatCard
+                            title="Total Orders"
+                            value={mockDashboardMetrics.totalOrdersToday.toString()}
+                            trend={mockDashboardMetrics.totalOrdersTrend}
+                            icon={<ShoppingBagIcon />}
+                            color="bg-fresqo-aqua"
+                        />
+                        <StatCard
+                            title="Pending Orders"
+                            value={mockDashboardMetrics.pendingOrders.toString()}
+                            trend={mockDashboardMetrics.pendingTrend}
+                            icon={<ClockIcon />}
+                            color="bg-orange-200"
+                            trendReverse
+                        />
+                        <StatCard
+                            title="Cancelled"
+                            value={mockDashboardMetrics.cancelledOrders.toString()}
+                            trend={mockDashboardMetrics.cancelledTrend}
+                            icon={<XCircleIcon />}
+                            color="bg-red-200"
+                            trendReverse
+                        />
+                    </>
+                )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -61,54 +84,70 @@ export default function Dashboard() {
                         <h3 className="font-bold text-lg text-gray-800">Revenue Analytics</h3>
                         <button className="text-fresqo-aqua text-sm font-medium hover:underline">View Report</button>
                     </div>
-
-                    <div className="h-64 flex items-end justify-between gap-2 md:gap-4 px-2">
-                        {mockRevenueData.map((data, index) => (
-                            <div key={index} className="flex flex-col items-center gap-2 group flex-1">
-                                <div
-                                    className="w-full bg-fresqo-dark/5 rounded-t-lg relative group-hover:bg-fresqo-aqua/20 transition-colors duration-300"
-                                    style={{ height: '100%' }}
-                                >
-                                    <div
-                                        className="absolute bottom-0 left-0 w-full bg-fresqo-dark rounded-t-lg transition-all duration-1000 ease-out group-hover:bg-fresqo-aqua"
-                                        style={{ height: `${(data.revenue / maxRevenue) * 100}%` }}
-                                    ></div>
-
-                                    {/* Tooltip */}
-                                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
-                                        ₹{data.revenue}
-                                        <div className="text-[10px] text-gray-400">{data.orders} orders</div>
-                                    </div>
+                    {isLoading ? (
+                        <div className="h-64 flex items-end justify-between gap-2 md:gap-4 px-2">
+                            {Array.from({ length: 7 }).map((_, i) => (
+                                <div key={i} className="flex flex-col items-center gap-2 flex-1 h-full justify-end">
+                                    <Skeleton className="w-full rounded-t-lg" style={{ height: `${Math.random() * 60 + 20}%` }} />
+                                    <Skeleton className="w-8 h-3" />
                                 </div>
-                                <span className="text-xs text-gray-400 font-medium rotate-0 md:rotate-0">{new Date(data.date).getDate()} Jan</span>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="h-64 flex items-end justify-between gap-2 md:gap-4 px-2 fade-in">
+                            {mockRevenueData.map((data, index) => (
+                                <div key={index} className="flex flex-col items-center gap-2 group flex-1">
+                                    <div
+                                        className="w-full bg-fresqo-dark/5 rounded-t-lg relative group-hover:bg-fresqo-aqua/20 transition-colors duration-300"
+                                        style={{ height: '100%' }}
+                                    >
+                                        <div
+                                            className="absolute bottom-0 left-0 w-full bg-fresqo-dark rounded-t-lg transition-all duration-1000 ease-out group-hover:bg-fresqo-aqua"
+                                            style={{ height: `${(data.revenue / maxRevenue) * 100}%` }}
+                                        ></div>
+
+                                        {/* Tooltip */}
+                                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
+                                            ₹{data.revenue}
+                                            <div className="text-[10px] text-gray-400">{data.orders} orders</div>
+                                        </div>
+                                    </div>
+                                    <span className="text-xs text-gray-400 font-medium rotate-0 md:rotate-0">{new Date(data.date).getDate()} Jan</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Recent Activity / Mini List */}
                 <div className="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 flex flex-col">
                     <h3 className="font-bold text-lg text-gray-800 mb-6">Recent Orders</h3>
                     <div className="flex-1 overflow-auto -mx-2 px-2 space-y-4 pr-1 scrollbar-thin">
-                        {mockOrders.slice(0, 5).map(order => (
-                            <div key={order.id} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 group">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-lg">
-                                        🥗
+                        {isLoading ? (
+                            Array.from({ length: 5 }).map((_, i) => (
+                                <SkeletonTableRow key={i} cols={2} className="py-2 border-b-0" />
+                            ))
+                        ) : (
+                            mockOrders.slice(0, 5).map(order => (
+                                <div key={order.id} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 group fade-in">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-lg">
+                                            🥗
+                                        </div>
+                                        <div>
+                                            <div className="font-medium text-gray-900 text-sm group-hover:text-fresqo-aqua transition-colors">{order.customerName}</div>
+                                            <div className="text-xs text-gray-500">{order.totalQuantity} items • ₹{order.totalAmount}</div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div className="font-medium text-gray-900 text-sm group-hover:text-fresqo-aqua transition-colors">{order.customerName}</div>
-                                        <div className="text-xs text-gray-500">{order.totalQuantity} items • ₹{order.totalAmount}</div>
-                                    </div>
+                                    <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${order.status === 'DELIVERED' ? 'bg-green-100 text-green-700' :
+                                        order.status === 'CANCELLED' ? 'bg-red-100 text-red-700' :
+                                            'bg-blue-100 text-blue-700'
+                                        }`}>
+                                        {order.status}
+                                    </span>
                                 </div>
-                                <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${order.status === 'DELIVERED' ? 'bg-green-100 text-green-700' :
-                                    order.status === 'CANCELLED' ? 'bg-red-100 text-red-700' :
-                                        'bg-blue-100 text-blue-700'
-                                    }`}>
-                                    {order.status}
-                                </span>
-                            </div>
-                        ))}
+                            ))
+                        )}
                     </div>
                     <button className="w-full mt-4 py-2 text-sm text-gray-500 hover:text-gray-800 font-medium border-t border-gray-100 transition-colors">
                         View All Orders

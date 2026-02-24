@@ -40,7 +40,7 @@ const MainLayout: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex bg-fresqo-offwhite">
       {/* Sidebar - Desktop */}
-      <div className="hidden lg:block relative z-20">
+      <div className="hidden lg:block sticky top-0 h-screen z-20">
         <Sidebar
           isCollapsed={isSidebarCollapsed}
           onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
@@ -69,6 +69,10 @@ const MainLayout: React.FC = () => {
           <Routes>
             <Route
               path="/"
+              element={<Navigate to="dashboard" replace />}
+            />
+            <Route
+              path="/dashboard"
               element={
                 <ProtectedRoute>
                   <Dashboard />
@@ -108,7 +112,7 @@ const MainLayout: React.FC = () => {
               }
             />
             <Route
-              path="/admin"
+              path="/admin-management"
               element={
                 <ProtectedRoute requiredRole="SUPER_ADMIN">
                   <AdminManagement />

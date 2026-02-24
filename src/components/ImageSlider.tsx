@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { SkeletonImage } from '@/components/ui/skeleton';
 
 interface ImageSliderProps {
     images: string[];
@@ -12,6 +13,7 @@ interface ImageSliderProps {
 
 export default function ImageSlider({ images, productName, interval = 3000, showDots = false, showArrows = false }: ImageSliderProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
 
     const handlePrevious = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -37,13 +39,20 @@ export default function ImageSlider({ images, productName, interval = 3000, show
 
     return (
         <div className="relative w-full h-full overflow-hidden bg-fresqo-cream">
+            {!loadedImages[currentIndex] && (
+                <div className="absolute inset-0 z-0">
+                    <SkeletonImage className="w-full h-full rounded-none" />
+                </div>
+            )}
             <AnimatePresence initial={false}>
                 <motion.img
                     key={currentIndex}
                     src={images[currentIndex]}
                     alt={`${productName} - View ${currentIndex + 1}`}
+                    loading="lazy"
+                    onLoad={() => setLoadedImages((prev) => ({ ...prev, [currentIndex]: true }))}
                     initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    animate={{ opacity: loadedImages[currentIndex] ? 1 : 0, scale: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.8, ease: "easeInOut" }}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"

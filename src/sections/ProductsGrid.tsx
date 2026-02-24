@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SkeletonCard } from '@/components/ui/skeleton';
 import { Plus, Minus, X, ShoppingBag, ChevronRight } from 'lucide-react';
 import ImageSlider from '@/components/ImageSlider';
 
@@ -80,6 +81,12 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   const gridRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Prevent background scroll when modal is open
   useEffect(() => {
@@ -152,58 +159,63 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
 
         {/* Products Grid */}
         <div ref={gridRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="product-card bg-white rounded-2xl overflow-hidden shadow-soft card-lift group cursor-pointer"
-              onClick={() => {
-                setSelectedProduct(product);
-                setQuantity(1);
-              }}
-            >
-              {/* Product Image Slider */}
-              <div className="relative aspect-square overflow-hidden bg-fresqo-cream rounded-t-2xl">
-                <ImageSlider images={product.images} productName={product.name} interval={3500 + (product.id * 500)} />
-              </div>
+          {isLoading ? (
+            Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))
+          ) : (
+            products.map((product) => (
+              <div
+                key={product.id}
+                className="product-card bg-white rounded-2xl overflow-hidden shadow-soft card-lift group cursor-pointer fade-in"
+                onClick={() => {
+                  setSelectedProduct(product);
+                  setQuantity(1);
+                }}
+              >
+                {/* Product Image Slider */}
+                <div className="relative aspect-square overflow-hidden bg-fresqo-cream rounded-t-2xl">
+                  <ImageSlider images={product.images} productName={product.name} interval={3500 + (product.id * 500)} />
+                </div>
 
-              {/* Product Info */}
-              <div className="p-6">
-                <h3 className="font-oswald text-xl font-bold text-fresqo-dark mb-1">
-                  {product.name}
-                </h3>
-                <p className="text-sm text-fresqo-gray mb-4">{product.description}</p>
+                {/* Product Info */}
+                <div className="p-6">
+                  <h3 className="font-oswald text-xl font-bold text-fresqo-dark mb-1">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-fresqo-gray mb-4">{product.description}</p>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-2xl text-fresqo-dark">₹{product.price}</span>
-                    <span className="text-sm text-fresqo-gray line-through">₹{product.originalPrice}</span>
-                    <span className="text-xs font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">{product.discount}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-2xl text-fresqo-dark">₹{product.price}</span>
+                      <span className="text-sm text-fresqo-gray line-through">₹{product.originalPrice}</span>
+                      <span className="text-xs font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">{product.discount}</span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setSelectedProduct(product);
+                        setQuantity(1);
+                      }}
+                      className="flex items-center gap-2 text-fresqo-aqua hover:text-fresqo-dark font-medium text-sm transition-colors"
+                    >
+                      View Details
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
                   </div>
+
                   <button
                     onClick={() => {
                       setSelectedProduct(product);
                       setQuantity(1);
                     }}
-                    className="flex items-center gap-2 text-fresqo-aqua hover:text-fresqo-dark font-medium text-sm transition-colors"
+                    className="w-full mt-4 btn-primary flex items-center justify-center gap-2"
                   >
-                    View Details
-                    <ChevronRight className="w-4 h-4" />
+                    <ShoppingBag className="w-4 h-4" />
+                    Pre-Order – COD
                   </button>
                 </div>
-
-                <button
-                  onClick={() => {
-                    setSelectedProduct(product);
-                    setQuantity(1);
-                  }}
-                  className="w-full mt-4 btn-primary flex items-center justify-center gap-2"
-                >
-                  <ShoppingBag className="w-4 h-4" />
-                  Pre-Order – COD
-                </button>
               </div>
-            </div>
-          ))}
+            )))}
         </div>
       </div>
 

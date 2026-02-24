@@ -246,6 +246,17 @@
   .container-custom {
     @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
   }
+  /* Skeleton Shimmer Effect */
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      #eeeeee 25%,
+      #f5f5f5 37%,
+      #eeeeee 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.4s infinite linear;
+  }
 }
 
 @layer utilities {
@@ -317,5 +328,20 @@
   /* Backface visibility */
   .backface-hidden {
     backface-visibility: hidden;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+
+  /* Fade in animation for real content */
+  .fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 }
