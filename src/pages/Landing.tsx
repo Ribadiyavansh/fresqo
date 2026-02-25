@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useOutletContext, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import HeroSection from '@/sections/HeroSection';
 import ValueProposition from '@/sections/ValueProposition';
 import ProductsGrid from '@/sections/ProductsGrid';
@@ -8,10 +8,8 @@ import Ingredients from '@/sections/Ingredients';
 import Testimonials from '@/sections/Testimonials';
 import FAQ from '@/sections/FAQ';
 import BlogSection from '@/sections/BlogSection';
-import type { MainLayoutContextType } from '@/layouts/MainLayout';
 
 export default function Landing() {
-    const { handleAddToCart } = useOutletContext<MainLayoutContextType>();
     const location = useLocation();
 
     useEffect(() => {
@@ -36,7 +34,7 @@ export default function Landing() {
             <ValueProposition />
 
             {/* Products Grid */}
-            <ProductsGrid onAddToCart={handleAddToCart} />
+            <ProductsGrid />
 
             {/* How It Works */}
             <HowItWorks />

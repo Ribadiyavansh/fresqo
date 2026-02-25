@@ -9,6 +9,7 @@ import Checkout from '@/pages/Checkout';
 import MyOrders from '@/pages/MyOrders';
 import Blog from '@/pages/Blog';
 import BlogPost from '@/pages/BlogPost';
+import ProductDetails from '@/pages/ProductDetails';
 
 import AdminRoutes from '@/admin/App';
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:id" element={<BlogPost />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
       </Route>
 
       {/* Admin Routes - The AdminRoutes component handles sub-routes */}

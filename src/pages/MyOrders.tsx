@@ -8,7 +8,11 @@ export default function MyOrders() {
 
     useEffect(() => {
         // Scroll to top
-        window.scrollTo(0, 0);
+        if ((window as any).lenis) {
+            (window as any).lenis.scrollTo(0, { immediate: true });
+        } else {
+            window.scrollTo(0, 0);
+        }
         // Fetch orders from localStorage
         const savedOrders = JSON.parse(localStorage.getItem('fresqo_orders') || '[]');
         setOrders(savedOrders);

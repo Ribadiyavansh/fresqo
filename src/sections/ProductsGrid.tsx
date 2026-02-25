@@ -1,86 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { motion, AnimatePresence } from 'framer-motion';
 import { SkeletonCard } from '@/components/ui/skeleton';
-import { Plus, Minus, X, ShoppingBag, ChevronRight } from 'lucide-react';
+import { ShoppingBag, ChevronRight } from 'lucide-react';
 import ImageSlider from '@/components/ImageSlider';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  originalPrice: number;
-  discount: string;
-  images: string[];
-  ingredients: string[];
-}
+import { products } from '@/data/products';
+import { useNavigate } from 'react-router-dom';
 
-interface ProductsGridProps {
-  onAddToCart: (product: Product, quantity: number) => void;
-}
-
-const products: Product[] = [
-  {
-    id: 1,
-    name: 'Variety Pack',
-    description: '4 unique flavors in one pack',
-    price: 349,
-    originalPrice: 449,
-    discount: '22% OFF',
-    images: ['/images/product-variety.jpg', '/images/product-variety.jpg', '/images/product-variety.jpg', '/images/product-variety.jpg'],
-    ingredients: ['Natural fruit extracts', 'Citric acid', 'Sodium bicarbonate', 'Natural colors'],
-  },
-  {
-    id: 2,
-    name: 'Cosmopolitan Ball',
-    description: 'Classic cranberry-citrus blend',
-    price: 349,
-    originalPrice: 449,
-    discount: '22% OFF',
-    images: ['/images/product-cosmopolitan.jpg', '/images/product-cosmopolitan.jpg', '/images/product-cosmopolitan.jpg', '/images/product-cosmopolitan.jpg'],
-    ingredients: ['Cranberry extract', 'Lime extract', 'Orange peel', 'Natural pink color'],
-  },
-  {
-    id: 3,
-    name: 'Sex on the Beach',
-    description: 'Tropical peach-orange delight',
-    price: 349,
-    originalPrice: 449,
-    discount: '22% OFF',
-    images: ['/images/product-sexonthebeach.jpg', '/images/product-sexonthebeach.jpg', '/images/product-sexonthebeach.jpg', '/images/product-sexonthebeach.jpg'],
-    ingredients: ['Peach extract', 'Orange extract', 'Cranberry', 'Natural orange color'],
-  },
-  {
-    id: 4,
-    name: 'Kala Khatta Ball',
-    description: 'Authentic Indian flavor',
-    price: 349,
-    originalPrice: 449,
-    discount: '22% OFF',
-    images: ['/images/product-kalakhatta.jpg', '/images/product-kalakhatta.jpg', '/images/product-kalakhatta.jpg', '/images/product-kalakhatta.jpg'],
-    ingredients: ['Kala khatta extract', 'Black salt', 'Lime', 'Natural purple color'],
-  },
-  {
-    id: 5,
-    name: 'Watermelon Mint',
-    description: 'Refreshing summer favorite',
-    price: 349,
-    originalPrice: 449,
-    discount: '22% OFF',
-    images: ['/images/product-watermelon.jpg', '/images/product-watermelon.jpg', '/images/product-watermelon.jpg', '/images/product-watermelon.jpg'],
-    ingredients: ['Watermelon extract', 'Mint extract', 'Lime', 'Natural green-pink color'],
-  },
-];
-
-export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
+export default function ProductsGrid() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [quantity, setQuantity] = useState(1);
   const gridRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -88,23 +21,6 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  // Prevent background scroll when modal is open
-  useEffect(() => {
-    if (selectedProduct) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-      if ((window as any).lenis) (window as any).lenis.stop();
-    } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      if ((window as any).lenis) (window as any).lenis.start();
-    }
-    return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      if ((window as any).lenis) (window as any).lenis.start();
-    };
-  }, [selectedProduct]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -133,13 +49,6 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
     return () => ctx.revert();
   }, []);
 
-  const handleAddToCart = () => {
-    if (selectedProduct) {
-      onAddToCart(selectedProduct, quantity);
-      setSelectedProduct(null);
-      setQuantity(1);
-    }
-  };
 
   return (
     <section ref={sectionRef} id="products" className="section-padding">
@@ -169,8 +78,7 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
                 key={product.id}
                 className="product-card bg-white rounded-2xl overflow-hidden shadow-soft card-lift group cursor-pointer fade-in"
                 onClick={() => {
-                  setSelectedProduct(product);
-                  setQuantity(1);
+                  navigate(`/product/${product.id}`);
                 }}
               >
                 {/* Product Image Slider */}
@@ -192,9 +100,9 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
                       <span className="text-xs font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">{product.discount}</span>
                     </div>
                     <button
-                      onClick={() => {
-                        setSelectedProduct(product);
-                        setQuantity(1);
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/product/${product.id}`);
                       }}
                       className="flex items-center gap-2 text-fresqo-aqua hover:text-fresqo-dark font-medium text-sm transition-colors"
                     >
@@ -204,9 +112,9 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
                   </div>
 
                   <button
-                    onClick={() => {
-                      setSelectedProduct(product);
-                      setQuantity(1);
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/product/${product.id}`);
                     }}
                     className="w-full mt-4 btn-primary flex items-center justify-center gap-2"
                   >
@@ -219,108 +127,7 @@ export default function ProductsGrid({ onAddToCart }: ProductsGridProps) {
         </div>
       </div>
 
-      {/* Product Detail Modal */}
-      <AnimatePresence>
-        {selectedProduct && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-            onClick={() => setSelectedProduct(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-              onClick={(e: React.MouseEvent) => e.stopPropagation()}
-              data-lenis-prevent="true"
-            >
-              <div className="relative">
-                {/* Close button */}
-                <button
-                  onClick={() => setSelectedProduct(null)}
-                  className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
 
-                {/* Product Image Slider */}
-                <div className="aspect-video overflow-hidden rounded-t-3xl relative">
-                  <ImageSlider images={selectedProduct.images} productName={selectedProduct.name} interval={4000} showDots={true} showArrows={true} />
-                </div>
-
-                {/* Product Details */}
-                <div className="p-8">
-                  <h2 className="font-oswald text-3xl font-bold text-fresqo-dark mb-2">
-                    {selectedProduct.name}
-                  </h2>
-                  <p className="text-fresqo-gray mb-6">{selectedProduct.description}</p>
-
-                  {/* Price */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="flex items-baseline gap-3">
-                      <span className="font-bold text-3xl text-fresqo-dark">₹{selectedProduct.price}</span>
-                      <span className="text-lg text-fresqo-gray line-through">₹{selectedProduct.originalPrice}</span>
-                      <span className="text-sm font-bold text-green-600 bg-green-100 px-2.5 py-1 rounded-full">{selectedProduct.discount}</span>
-                    </div>
-                    <span className="text-sm text-fresqo-gray">per pack</span>
-                  </div>
-
-                  {/* Ingredients */}
-                  <div className="mb-8">
-                    <h4 className="font-semibold text-fresqo-dark mb-3">Ingredients</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProduct.ingredients.map((ingredient, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 bg-fresqo-cream rounded-full text-sm text-fresqo-gray"
-                        >
-                          {ingredient}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Quantity Selector */}
-                  <div className="mb-8">
-                    <div className="flex items-center gap-4 mb-1">
-                      <span className="font-semibold text-fresqo-dark">Quantity</span>
-                      <div className="flex items-center gap-3 bg-fresqo-cream rounded-xl p-1">
-                        <button
-                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                          className="w-10 h-10 flex items-center justify-center hover:bg-white rounded-lg transition-colors"
-                        >
-                          <Minus className="w-4 h-4" />
-                        </button>
-                        <span className="w-8 text-center font-semibold">{quantity}</span>
-                        <button
-                          onClick={() => setQuantity(Math.min(4, quantity + 1))}
-                          className="w-10 h-10 flex items-center justify-center hover:bg-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                          disabled={quantity >= 4}
-                        >
-                          <Plus className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                    <p className="text-[11px] text-fresqo-gray">*maximum 4 per order</p>
-                  </div>
-
-                  {/* Add to Cart Button */}
-                  <button
-                    onClick={handleAddToCart}
-                    className="w-full btn-primary flex items-center justify-center gap-2"
-                  >
-                    <ShoppingBag className="w-5 h-5" />
-                    Add to Pre-Order – ₹{selectedProduct.price * quantity}
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

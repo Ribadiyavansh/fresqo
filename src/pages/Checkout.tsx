@@ -5,7 +5,11 @@ import type { MainLayoutContextType } from '@/layouts/MainLayout';
 export default function Checkout() {
     const { cart, handleClearCart } = useOutletContext<MainLayoutContextType>();
     useEffect(() => {
-        window.scrollTo(0, 0);
+        if ((window as any).lenis) {
+            (window as any).lenis.scrollTo(0, { immediate: true });
+        } else {
+            window.scrollTo(0, 0);
+        }
     }, []);
 
     return (

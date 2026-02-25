@@ -18,6 +18,7 @@ import {
   Trash2
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { products } from '@/data/products';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,13 +39,6 @@ interface PreOrderFormProps {
   onClearCart: () => void;
 }
 
-const products = [
-  { id: 1, name: 'Variety Pack', price: 349, originalPrice: 449, discount: '22% OFF', images: ['/images/product-variety.jpg', '/images/product-variety.jpg', '/images/product-variety.jpg', '/images/product-variety.jpg'] },
-  { id: 2, name: 'Cosmopolitan Ball', price: 349, originalPrice: 449, discount: '22% OFF', images: ['/images/product-cosmopolitan.jpg', '/images/product-cosmopolitan.jpg', '/images/product-cosmopolitan.jpg', '/images/product-cosmopolitan.jpg'] },
-  { id: 3, name: 'Sex on the Beach', price: 349, originalPrice: 449, discount: '22% OFF', images: ['/images/product-sexonthebeach.jpg', '/images/product-sexonthebeach.jpg', '/images/product-sexonthebeach.jpg', '/images/product-sexonthebeach.jpg'] },
-  { id: 4, name: 'Kala Khatta Ball', price: 349, originalPrice: 449, discount: '22% OFF', images: ['/images/product-kalakhatta.jpg', '/images/product-kalakhatta.jpg', '/images/product-kalakhatta.jpg', '/images/product-kalakhatta.jpg'] },
-  { id: 5, name: 'Watermelon Mint', price: 349, originalPrice: 449, discount: '22% OFF', images: ['/images/product-watermelon.jpg', '/images/product-watermelon.jpg', '/images/product-watermelon.jpg', '/images/product-watermelon.jpg'] },
-];
 
 const states = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
