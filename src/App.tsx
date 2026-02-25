@@ -7,6 +7,8 @@ import Login from '@/pages/Login';
 import Signup from '@/pages/Signup';
 import Checkout from '@/pages/Checkout';
 import MyOrders from '@/pages/MyOrders';
+import Blog from '@/pages/Blog';
+import BlogPost from '@/pages/BlogPost';
 
 import AdminRoutes from '@/admin/App';
 
@@ -22,6 +24,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogPost />} />
       </Route>
 
       {/* Admin Routes - The AdminRoutes component handles sub-routes */}

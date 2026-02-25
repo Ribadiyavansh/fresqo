@@ -1,59 +1,11 @@
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Calendar, Clock } from 'lucide-react';
-
-const blogs = [
-    {
-        id: 1,
-        title: "10 Creative Ways to Use Fresqo Cocktail Balls at Your Next Party",
-        excerpt: "Discover unique serving ideas and creative combinations to elevate your hosting game with our premium cocktail balls.",
-        date: "Oct 15, 2023",
-        readTime: "5 min read",
-        image: "/images/hero-bomb.jpg",
-        category: "Entertaining",
-    },
-    {
-        id: 2,
-        title: "The Science Behind the Perfect Fizz",
-        excerpt: "Ever wondered what makes our cocktail balls fizz so perfectly? Dive into the science of carbonation and flavor release.",
-        date: "Oct 28, 2023",
-        readTime: "4 min read",
-        image: "/images/product-cola.jpg",
-        category: "Behind the Scenes",
-    },
-    {
-        id: 3,
-        title: "Mocktail Magic: Crafting Alcohol-Free Masterpieces",
-        excerpt: "Who says you need alcohol to have fun? Learn how to mix incredible mocktails using Fresqo for the whole family.",
-        date: "Nov 05, 2023",
-        readTime: "6 min read",
-        image: "/images/product-mojito.jpg",
-        category: "Recipes",
-    },
-    {
-        id: 4,
-        title: "Pairing Fresqo Flavors with Gourmet Appetizers",
-        excerpt: "A comprehensive guide to matching our delicious cocktail and mocktail flavors with the perfect bite-sized party foods.",
-        date: "Nov 12, 2023",
-        readTime: "7 min read",
-        image: "/images/product-watermelon.jpg",
-        category: "Pairings",
-    },
-    {
-        id: 5,
-        title: "From Setup to Cleanup: The Ultimate Host's Guide",
-        excerpt: "Streamline your party planning with our foolproof guide to hosting an unforgettable event with minimal stress.",
-        date: "Nov 20, 2023",
-        readTime: "5 min read",
-        image: "/images/product-pinacolada.jpg",
-        category: "Entertaining",
-    }
-];
+import { blogs } from '@/data/blogs';
 
 export default function BlogSection() {
-    const [showAll, setShowAll] = useState(false);
-
-    const displayedBlogs = showAll ? blogs : blogs.slice(0, 3);
+    const navigate = useNavigate();
+    const displayedBlogs = blogs.slice(0, 3);
 
     return (
         <section id="blog" className="py-24 bg-fresqo-cream relative overflow-hidden">
@@ -88,6 +40,7 @@ export default function BlogSection() {
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ duration: 0.4, delay: index * 0.1 }}
                                 key={post.id}
+                                onClick={() => navigate(`/blog/${post.id}`)}
                                 className="bg-white rounded-3xl overflow-hidden shadow-soft card-lift flex flex-col group cursor-pointer border border-fresqo-border"
                             >
                                 <div className="aspect-[4/3] relative overflow-hidden bg-fresqo-cream">
@@ -134,10 +87,10 @@ export default function BlogSection() {
                         className="mt-16 flex justify-center"
                     >
                         <button
-                            onClick={() => setShowAll(!showAll)}
+                            onClick={() => navigate('/blog')}
                             className="btn-primary"
                         >
-                            {showAll ? 'Show Less' : 'Read More Articles'}
+                            Read More Articles
                         </button>
                     </motion.div>
                 )}

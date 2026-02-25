@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
   ShoppingBag,
   Check,
@@ -13,7 +14,6 @@ import {
   MapPin,
   User,
   CreditCard,
-  Share2,
   CheckCircle2,
   Trash2
 } from 'lucide-react';
@@ -59,8 +59,8 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
   const [step, setStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [orderId, setOrderId] = useState('');
-  const [countdown, setCountdown] = useState(5);
   const [pendingCheckout, setPendingCheckout] = useState(false);
+  const navigate = useNavigate();
 
   const { isLoggedIn, openAuthModal } = useAuth();
 
@@ -104,27 +104,7 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
     }
   }, [cart]);
 
-  // Countdown timer for automatic close
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-    if (isSubmitted && countdown > 0) {
-      timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-    } else if (isSubmitted && countdown === 0) {
-      setIsSubmitted(false);
-      setStep(1);
-      setFormData({
-        fullName: '',
-        phone: '',
-        address1: '',
-        address2: '',
-        city: '',
-        state: '',
-        pincode: '',
-      });
-      setCountdown(5); // Reset for next time
-    }
-    return () => clearTimeout(timer);
-  }, [isSubmitted, countdown]);
+  // Remove countdown timer effect
 
   const validateStep2 = () => {
     const newErrors: Record<string, string> = {};
@@ -159,9 +139,7 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = () => {
+  }; const handleSubmit = () => {
     if (validateStep2()) {
       // Generate order ID
       const newOrderId = 'FQ' + Date.now().toString().slice(-8);
@@ -179,20 +157,12 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
       const existingOrders = JSON.parse(localStorage.getItem('fresqo_orders') || '[]');
       localStorage.setItem('fresqo_orders', JSON.stringify([newOrder, ...existingOrders]));
 
-      setCountdown(5);
       setIsSubmitted(true);
       onClearCart();
     }
   };
 
   const totalAmount = orderItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-
-  const shareOnWhatsApp = () => {
-    const itemDetails = orderItems.map(item => `${item.product.name} x ${item.quantity}`).join(', ');
-    const message = `I just ordered Fresqo cocktail balls (${itemDetails})! Order ID: ${orderId}. Can't wait to try them! 🍹`;
-    const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
-  };
 
   if (isSubmitted) {
     return (
@@ -208,7 +178,7 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
             </div>
 
             <h2 className="font-oswald text-3xl md:text-4xl font-bold text-fresqo-dark mb-4">
-              your order will comming!
+              Your order is coming!
             </h2>
 
             <p className="text-fresqo-gray mb-8">
@@ -226,17 +196,20 @@ export default function PreOrderForm({ cart, onClearCart }: PreOrderFormProps) {
               </div>
             </div>
 
-            <p className="text-sm text-fresqo-gray mb-4 font-medium">
-              Closing automatically in <span className="font-bold text-fresqo-dark text-lg">{countdown}</span> seconds...
-            </p>
-
-            <button
-              onClick={shareOnWhatsApp}
-              className="w-full flex items-center justify-center gap-2 bg-green-500 text-white font-semibold px-6 py-3 rounded-xl hover:bg-green-600 transition-colors"
-            >
-              <Share2 className="w-5 h-5" />
-              Share on WhatsApp
-            </button>
+            <div className="flex flex-col sm:flex-row gap-4 mt-8">
+              <button
+                onClick={() => navigate('/')}
+                className="flex-1 px-6 py-3 border-2 border-fresqo-dark text-fresqo-dark font-semibold rounded-xl hover:bg-fresqo-dark hover:text-white transition-all duration-300"
+              >
+                Back to Home
+              </button>
+              <button
+                onClick={() => navigate('/#products')}
+                className="flex-1 btn-primary"
+              >
+                Continue Shopping
+              </button>
+            </div>
           </motion.div>
         </div>
       </section>
