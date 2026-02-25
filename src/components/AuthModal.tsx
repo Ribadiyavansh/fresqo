@@ -62,6 +62,10 @@ export default function AuthModal() {
                     }
                 }
             }, 300);
+        } else if (authModalRedirect === 'cart') {
+            setTimeout(() => {
+                window.dispatchEvent(new Event('openCartDrawer'));
+            }, 300);
         }
     };
 

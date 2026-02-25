@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -43,6 +43,16 @@ export default function MainLayout() {
 
     // Router navigation hook
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Scroll to top on route change
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        // If Lenis is being used, reset its internal scroll position immediately
+        if ((window as any).lenis) {
+            (window as any).lenis.scrollTo(0, { immediate: true });
+        }
+    }, [location.pathname]);
 
     // Announcement state
     const [isAnnouncementVisible, setIsAnnouncementVisible] = useState(true);
@@ -63,8 +73,22 @@ export default function MainLayout() {
             }
             return [...prevCart, { product, quantity: cappedQuantity }];
         });
-        setIsCartOpen(true);
+
+        if (!isLoggedIn) {
+            openAuthModal('login', 'cart');
+        } else {
+            setIsCartOpen(true);
+        }
     };
+
+    // Listen for custom event to open cart after login
+    useEffect(() => {
+        const handleOpenCart = () => {
+            setIsCartOpen(true);
+        };
+        window.addEventListener('openCartDrawer', handleOpenCart);
+        return () => window.removeEventListener('openCartDrawer', handleOpenCart);
+    }, []);
 
     // Update quantity
     const handleUpdateQuantity = (productId: number, quantity: number) => {

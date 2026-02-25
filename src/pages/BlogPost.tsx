@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, Clock } from 'lucide-react';
+import { Calendar, Clock } from 'lucide-react';
+import { useEffect } from 'react';
 import { blogs } from '@/data/blogs';
 
 export default function BlogPost() {
@@ -7,6 +8,21 @@ export default function BlogPost() {
     const navigate = useNavigate();
 
     const post = blogs.find(b => b.id === id || b.id === Number(id).toString());
+
+    // Intercept hardware/browser back button to always redirect to /blog
+    useEffect(() => {
+        const handlePopState = () => {
+            navigate('/blog', { replace: true });
+        };
+
+        // Push a state so intercepting works and doesn't just go back to previous site
+        window.history.pushState(null, '', window.location.href);
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [navigate]);
 
     if (!post) {
         return (
@@ -23,13 +39,6 @@ export default function BlogPost() {
         <div className="pt-[100px] min-h-screen bg-fresqo-cream flex flex-col">
             <article className="flex-1 pt-4 pb-16 relative overflow-hidden h-full flex flex-col">
                 <div className="container-custom max-w-4xl mx-auto">
-                    <button
-                        onClick={() => navigate('/blog')}
-                        className="flex items-center gap-2 text-fresqo-gray hover:text-fresqo-lime mb-8 transition-colors"
-                    >
-                        <ArrowLeft className="w-4 h-4" /> Back
-                    </button>
-
                     <div className="bg-white rounded-3xl overflow-hidden shadow-soft card-lift border border-fresqo-border p-6 md:p-12">
                         <div className="mb-8">
                             <div className="inline-block bg-fresqo-cream text-fresqo-dark px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
